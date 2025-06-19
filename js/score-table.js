@@ -8,9 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const rows = document.querySelectorAll('tbody tr');
     
     for (let i = 1; i <= playerCount; i++) {
-        // Add header
+        // Add header with editable player name
         const th = document.createElement('th');
-        th.textContent = `Player ${i}`;
+        const nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.value = `Player ${i}`;
+        nameInput.className = 'player-name';
+        nameInput.placeholder = 'Enter name';
+        th.appendChild(nameInput);
         headerRow.appendChild(th);
         
         // Add input cells

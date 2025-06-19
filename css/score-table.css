@@ -99,3 +99,28 @@
         background-color: #e8f4f8;
     }
 }
+
+.player-name {
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    padding: 4px;
+    font-size: inherit;
+}
+
+.player-name:focus {
+    background: rgba(255, 255, 255, 0.1);
+    outline: none;
+    border-radius: 4px;
+}
+
+/* Mobile optimization for player names */
+@media screen and (max-width: 480px) {
+    .player-name {
+        font-size: 12px;
+        padding: 2px;
+    }
+}
