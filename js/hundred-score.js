@@ -96,62 +96,78 @@ function calculatePoints(row, playerIndex) {
         pointsCell.textContent = '-';
     }
     
-    calculateSectionSums(playerIndex);
+    calculateSectionSums();
 }
 
-function calculateSectionSums(playerIndex) {
-    const rows = document.querySelectorAll('tbody tr');
-    let sections = [
-        {start: 2, end: 8, sumRow: 9},    // Questions 1-7
-        {start: 10, end: 16, sumRow: 17}, // Questions 8-14
-        {start: 18, end: 24, sumRow: 25}  // Questions 15-21
-    ];
+function calculateSectionSums() {
+    const playerCount = document.querySelectorAll('#playerHeaders th').length - 1;
     
-    sections.forEach(section => {
-        let sum = 0;
+    for (let player = 1; player <= playerCount; player++) {
+        // Define sections with their row ranges
+        const sections = [
+            { rows: [2, 3, 4, 5, 6, 7, 8], sumRow: 9 },    // Questions 1-7
+            { rows: [10, 11, 12, 13, 14, 15, 16], sumRow: 17 }, // Questions 8-14
+            { rows: [18, 19, 20, 21, 22, 23, 24], sumRow: 25 }  // Questions 15-21
+        ];
+
         // Calculate sum for each section
-        for (let i = section.start; i <= section.end; i++) {
-            const pointsCell = rows[i].querySelector(`td:nth-child(${playerIndex * 3 + 3})`);
-            if (pointsCell && pointsCell.textContent !== '-') {
-                const points = parseInt(pointsCell.textContent);
-                if (!isNaN(points)) {
-                    sum += points;
+        sections.forEach(section => {
+            let sectionSum = 0;
+            section.rows.forEach(rowIndex => {
+                const row = document.querySelector(`tbody tr:nth-child(${rowIndex})`);
+                if (row) {
+                    const pointsCell = row.querySelector(`td:nth-child(${player * 3 + 3})`);
+                    if (pointsCell && pointsCell.textContent !== '-') {
+                        const points = parseInt(pointsCell.textContent);
+                        if (!isNaN(points)) {
+                            sectionSum += points;
+                        }
+                    }
+                }
+            });
+
+            // Update section sum
+            const sumRow = document.querySelector(`tbody tr:nth-child(${section.sumRow})`);
+            if (sumRow) {
+                const sumCell = sumRow.querySelector(`td:nth-child(${player * 3 + 1})`);
+                if (sumCell) {
+                    sumCell.colSpan = "3";
+                    sumCell.textContent = sectionSum;
+                    sumCell.style.backgroundColor = '#e8f4f8';
+                    sumCell.style.fontWeight = 'bold';
                 }
             }
-        }
-        
-        // Update the sum cell for the current section
-        const sumCell = rows[section.sumRow].querySelector(`td:nth-child(${playerIndex * 3 - 1})`);
-        if (sumCell) {
-            sumCell.colSpan = "3";
-            sumCell.textContent = sum;
-        }
-    });
+        });
+    }
+
+    // Calculate final total
+    calculateFinalTotal();
 }
 
-function calculateFinalScore() {
+function calculateFinalTotal() {
     const playerCount = document.querySelectorAll('#playerHeaders th').length - 1;
     
     for (let player = 1; player <= playerCount; player++) {
         let totalSum = 0;
-        const sections = document.querySelectorAll('.sum-row');
+        const sumRows = document.querySelectorAll('.sum-row');
         
-        // Sum up all section totals
-        sections.forEach(section => {
-            const sumCell = section.querySelector(`td:nth-child(${player * 3 - 1})`);
+        sumRows.forEach(row => {
+            const sumCell = row.querySelector(`td:nth-child(${player * 3 + 1})`);
             if (sumCell && sumCell.textContent) {
                 totalSum += parseInt(sumCell.textContent) || 0;
             }
         });
-        
-        // Update total score
+
         const totalRow = document.querySelector('.total-row');
-        const totalCell = totalRow.querySelector(`td:nth-child(${player * 3 - 1})`);
-        if (totalCell) {
-            totalCell.colSpan = "3";
-            totalCell.textContent = totalSum;
-            totalCell.style.backgroundColor = '#3498db';
-            totalCell.style.color = 'white';
+        if (totalRow) {
+            const totalCell = totalRow.querySelector(`td:nth-child(${player * 3 + 1})`);
+            if (totalCell) {
+                totalCell.colSpan = "3";
+                totalCell.textContent = totalSum;
+                totalCell.style.backgroundColor = '#3498db';
+                totalCell.style.color = 'white';
+                totalCell.style.fontWeight = 'bold';
+            }
         }
     }
 }
