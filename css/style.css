@@ -22,6 +22,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 1rem;
+    text-align: center; /* Add this line */
 }
 
 h1 {
@@ -30,6 +31,8 @@ h1 {
     font-size: 4rem;
     margin-bottom: 2rem;
     text-align: center;
+    width: 100%; /* Add this line */
+    padding: 0 1rem; /* Add this line */
 }
 
 .button-container {
@@ -71,16 +74,15 @@ h1 {
 @media screen and (max-width: 480px) {
     h1 {
         font-size: 2rem;
+        width: 100%;
+        margin: 0 auto 2rem auto;
+        padding: 0 1rem;
+        text-align: center;
     }
 
-    .button-container {
-        flex-direction: column;
-        width: 100%;
-        max-width: 300px;
-    }
-
-    .btn {
-        width: 100%;
+    .container {
+        padding: 1rem;
+        text-align: center;
     }
 }
 
