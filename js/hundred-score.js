@@ -8,14 +8,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add player columns
     for (let i = 1; i <= playerCount; i++) {
-        // Add player name header
+        // Add header with editable player name
         const th = document.createElement('th');
         const nameInput = document.createElement('input');
         nameInput.type = 'text';
         nameInput.value = `Player ${i}`;
         nameInput.className = 'player-name';
         nameInput.placeholder = 'Enter name';
-        th.colSpan = "3";
+        
+        // Add click handler to select all text
+        nameInput.addEventListener('focus', function() {
+            this.select();
+        });
+        
         th.appendChild(nameInput);
         headerRow.appendChild(th);
         

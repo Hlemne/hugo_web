@@ -15,6 +15,12 @@ document.addEventListener('DOMContentLoaded', () => {
         nameInput.value = `Player ${i}`;
         nameInput.className = 'player-name';
         nameInput.placeholder = 'Enter name';
+        
+        // Add click handler to select all text
+        nameInput.addEventListener('focus', function() {
+            this.select();
+        });
+        
         th.appendChild(nameInput);
         headerRow.appendChild(th);
         
