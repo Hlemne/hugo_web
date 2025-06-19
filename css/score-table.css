@@ -1,0 +1,46 @@
+.score-table-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    margin: 2rem;
+    overflow-x: auto;
+}
+
+.score-table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 600px;
+}
+
+.score-table th,
+.score-table td {
+    border: 1px solid #ccc;
+    padding: 0.8rem;
+    text-align: center;
+}
+
+.score-table th {
+    background-color: #3498db;
+    color: white;
+}
+
+.score-table input {
+    width: 60px;
+    padding: 0.5rem;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.sum-row, .bonus-row, .total-row {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+    .score-table-container {
+        margin: 1rem;
+        padding: 1rem;
+    }
+}

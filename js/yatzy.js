@@ -13,11 +13,9 @@ function selectGame(gameType) {
     modal.style.display = 'none';
     
     if (gameType === 'yatzy') {
-        console.log(`Starting Yatzy with ${playerCount} players`);
-        // Add your Yatzy game logic here
+        window.location.href = `yatzy-score.html?players=${playerCount}`;
     } else {
-        console.log(`Starting Maxi Yatzy with ${playerCount} players`);
-        // Add your Maxi Yatzy game logic here
+        window.location.href = `maxi-yatzy-score.html?players=${playerCount}`;
     }
 }
 

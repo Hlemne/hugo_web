@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yatzy Score Table</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/yatzy.css">
+    <link rel="stylesheet" href="css/score-table.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Yatzy Score Table</h1>
+        <div class="score-table-container">
+            <table id="scoreTable" class="score-table">
+                <thead>
+                    <tr id="playerHeaders">
+                        <th>Combinations</th>
+                        <!-- Player columns will be added by JavaScript -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Upper section -->
+                    <tr><td>Ones</td></tr>
+                    <tr><td>Twos</td></tr>
+                    <tr><td>Threes</td></tr>
+                    <tr><td>Fours</td></tr>
+                    <tr><td>Fives</td></tr>
+                    <tr><td>Sixes</td></tr>
+                    <tr class="sum-row"><td>Sum</td></tr>
+                    <tr class="bonus-row"><td>Bonus</td></tr>
+                    <!-- Lower section -->
+                    <tr><td>One Pair</td></tr>
+                    <tr><td>Two Pairs</td></tr>
+                    <tr><td>Three of a Kind</td></tr>
+                    <tr><td>Four of a Kind</td></tr>
+                    <tr><td>Small Straight</td></tr>
+                    <tr><td>Large Straight</td></tr>
+                    <tr><td>Full House</td></tr>
+                    <tr><td>Chance</td></tr>
+                    <tr><td>Yatzy</td></tr>
+                    <tr class="total-row"><td>Total Score</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="button-container">
+            <button class="btn blue" onclick="saveScores()">Save Scores</button>
+            <a href="yatzy.html" class="btn red">Back to Players</a>
+        </div>
+    </div>
+    <script src="js/score-table.js"></script>
+</body>
+</html>
