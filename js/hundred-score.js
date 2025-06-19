@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         nameInput.value = `Player ${i}`;
         nameInput.className = 'player-name';
         nameInput.placeholder = 'Enter name';
+        th.colSpan = "3"; // Makes the header span all three columns
         
         // Add click handler to select all text
         nameInput.addEventListener('focus', function() {

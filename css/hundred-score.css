@@ -24,6 +24,16 @@
 }
 
 /* Player name styling */
+.score-table th {
+    background: #2c3e50;
+    color: white;
+    padding: 12px 8px;
+}
+
+.score-table th[colspan="3"] {
+    width: 150px; /* Adjust this value to match the combined width of Answer/Correct/Points */
+}
+
 .player-name {
     background: transparent;
     border: none;
@@ -32,6 +42,7 @@
     text-align: center;
     width: 100%;
     padding: 8px;
+    min-width: 140px; /* Adjust this to match the combined width minus padding */
 }
 
 /* Input field styling */
@@ -42,6 +53,15 @@
     border-radius: 4px;
     text-align: center;
     margin: 2px;
+}
+
+/* Make sure subheader cells match input widths */
+.subheader td {
+    width: 45px;
+    padding: 6px;
+    text-align: center;
+    background: #f5f6fa;
+    font-weight: 500;
 }
 
 .score-input:focus {
@@ -107,5 +127,13 @@
         position: sticky;
         left: 0;
         z-index: 1;
+    }
+
+    .player-name {
+        min-width: 120px;
+    }
+    
+    .score-table th[colspan="3"] {
+        width: 120px;
     }
 }
