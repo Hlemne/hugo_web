@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0-100 Game</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/hundred.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to 0-100</h1>
+        <div class="player-form">
+            <label for="playerCount">How many players are you?</label>
+            <input type="number" id="playerCount" min="1" max="6" value="1">
+            <button class="btn blue" onclick="startGame()">Start Game</button>
+        </div>
+        <div class="button-container">
+            <a href="index.html" class="btn red">Back to Home</a>
+        </div>
+    </div>
+    <script src="js/hundred.js"></script>
+</body>
+</html>

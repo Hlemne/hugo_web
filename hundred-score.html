@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0-100 Score Table</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/hundred.css">
+    <link rel="stylesheet" href="css/hundred-score.css">
+</head>
+<body>
+    <div class="container">
+        <div class="score-table-container">
+            <table id="scoreTable" class="score-table">
+                <thead>
+                    <tr id="playerHeaders">
+                        <th>Question</th>
+                        <!-- Player columns will be added by JavaScript -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Headers for each player's columns -->
+                    <tr class="subheader">
+                        <td></td>
+                        <!-- Will be filled with Answer/Correct/Points -->
+                    </tr>
+                    <!-- Questions 1-7 -->
+                    <tr><td>1</td></tr>
+                    <tr><td>2</td></tr>
+                    <tr><td>3</td></tr>
+                    <tr><td>4</td></tr>
+                    <tr><td>5</td></tr>
+                    <tr><td>6</td></tr>
+                    <tr><td>7</td></tr>
+                    <tr class="sum-row"><td>Sum 1-7</td></tr>
+                    <!-- Questions 8-14 -->
+                    <tr><td>8</td></tr>
+                    <tr><td>9</td></tr>
+                    <tr><td>10</td></tr>
+                    <tr><td>11</td></tr>
+                    <tr><td>12</td></tr>
+                    <tr><td>13</td></tr>
+                    <tr><td>14</td></tr>
+                    <tr class="sum-row"><td>Sum 8-14</td></tr>
+                    <!-- Questions 15-21 -->
+                    <tr><td>15</td></tr>
+                    <tr><td>16</td></tr>
+                    <tr><td>17</td></tr>
+                    <tr><td>18</td></tr>
+                    <tr><td>19</td></tr>
+                    <tr><td>20</td></tr>
+                    <tr><td>21</td></tr>
+                    <tr class="sum-row"><td>Sum 15-21</td></tr>
+                    <tr class="total-row"><td>Total Score</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="button-container">
+            <button class="btn blue" onclick="calculateFinalScore()">Calculate Score</button>
+            <button class="btn green" onclick="saveScores()">Save Scores</button>
+            <a href="hundred.html" class="btn red">Back</a>
+        </div>
+    </div>
+    <script src="js/hundred-score.js"></script>
+</body>
+</html>
