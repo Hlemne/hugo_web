@@ -79,9 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function calculatePoints(row, playerIndex) {
-    const answerInput = row.querySelector(`td:nth-child(${playerIndex * 3 + 1}) input`);
-    const correctInput = row.querySelector(`td:nth-child(${playerIndex * 3 + 2}) input`);
-    const pointsCell = row.querySelector(`td:nth-child(${playerIndex * 3 + 3})`);
+    const answerInput = row.querySelector(`td:nth-child(${(playerIndex - 1) * 3 + 2}) input`);
+    const correctInput = row.querySelector(`td:nth-child(${(playerIndex - 1) * 3 + 3}) input`);
+    const pointsCell = row.querySelector(`td:nth-child(${(playerIndex - 1) * 3 + 4})`);
     
     if (!answerInput || !correctInput) return;
     
@@ -103,20 +103,18 @@ function calculateSectionSums() {
     const playerCount = document.querySelectorAll('#playerHeaders th').length - 1;
     
     for (let player = 1; player <= playerCount; player++) {
-        // Define sections with their row ranges
         const sections = [
-            { rows: [2, 3, 4, 5, 6, 7, 8], sumRow: 9 },    // Questions 1-7
-            { rows: [10, 11, 12, 13, 14, 15, 16], sumRow: 17 }, // Questions 8-14
-            { rows: [18, 19, 20, 21, 22, 23, 24], sumRow: 25 }  // Questions 15-21
+            { rows: [2, 3, 4, 5, 6, 7, 8], sumRow: 9 },
+            { rows: [10, 11, 12, 13, 14, 15, 16], sumRow: 17 },
+            { rows: [18, 19, 20, 21, 22, 23, 24], sumRow: 25 }
         ];
 
-        // Calculate sum for each section
         sections.forEach(section => {
             let sectionSum = 0;
             section.rows.forEach(rowIndex => {
                 const row = document.querySelector(`tbody tr:nth-child(${rowIndex})`);
                 if (row) {
-                    const pointsCell = row.querySelector(`td:nth-child(${player * 3 + 3})`);
+                    const pointsCell = row.querySelector(`td:nth-child(${(player - 1) * 3 + 4})`);
                     if (pointsCell && pointsCell.textContent !== '-') {
                         const points = parseInt(pointsCell.textContent);
                         if (!isNaN(points)) {
@@ -126,15 +124,12 @@ function calculateSectionSums() {
                 }
             });
 
-            // Update section sum
             const sumRow = document.querySelector(`tbody tr:nth-child(${section.sumRow})`);
             if (sumRow) {
-                const sumCell = sumRow.querySelector(`td:nth-child(${player * 3 + 1})`);
+                const sumCell = sumRow.querySelector(`td:nth-child(${(player - 1) * 3 + 2})`);
                 if (sumCell) {
                     sumCell.colSpan = "3";
                     sumCell.textContent = sectionSum;
-                    sumCell.style.backgroundColor = '#e8f4f8';
-                    sumCell.style.fontWeight = 'bold';
                 }
             }
         });
