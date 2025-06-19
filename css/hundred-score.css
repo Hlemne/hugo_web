@@ -22,6 +22,7 @@
     text-align: center;
     border: 1px solid #ddd;
     border-radius: 4px;
+    margin: 2px 0;
 }
 
 .points-cell {
@@ -31,6 +32,8 @@
 
 .sum-row {
     background-color: #e8f4f8;
+    font-weight: bold;
+    padding: 12px 4px;
 }
 
 .total-row {
@@ -39,7 +42,33 @@
     font-weight: bold;
 }
 
-/* Mobile optimization */
+/* Add spacing between sections */
+tr:nth-child(10),  /* After sum 1-7 */
+tr:nth-child(18) { /* After sum 8-14 */
+    border-top: 20px solid transparent;
+}
+
+/* Adjust input spacing */
+.score-input {
+    width: 50px;
+    padding: 4px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 2px 0;
+}
+
+/* Add hover effect for better UX */
+.score-input:hover {
+    border-color: #3498db;
+}
+
+.score-input:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 3px rgba(52, 152, 219, 0.5);
+}
+
 @media screen and (max-width: 480px) {
     .score-input {
         width: 40px;
@@ -51,5 +80,14 @@
     .score-table td {
         padding: 4px 2px;
         font-size: 12px;
+    }
+    
+    tr:nth-child(10),
+    tr:nth-child(18) {
+        border-top: 10px solid transparent;
+    }
+    
+    .sum-row td {
+        padding: 8px 2px;
     }
 }

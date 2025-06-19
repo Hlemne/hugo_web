@@ -79,38 +79,46 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function calculatePoints(row, playerIndex) {
-    const inputs = row.getElementsByClassName('score-input');
-    const answer = parseInt(inputs[0].value) || 0;
-    const correct = parseInt(inputs[1].value) || 0;
-    const pointsCell = row.querySelector('.points-cell');
+    const answerInput = row.querySelector(`td:nth-child(${playerIndex * 3 + 1}) input`);
+    const correctInput = row.querySelector(`td:nth-child(${playerIndex * 3 + 2}) input`);
+    const pointsCell = row.querySelector(`td:nth-child(${playerIndex * 3 + 3})`);
     
-    if (answer === correct) {
+    if (!answerInput || !correctInput) return;
+    
+    const answer = parseInt(answerInput.value) || 0;
+    const correct = parseInt(correctInput.value) || 0;
+    
+    if (answer === correct && answer !== 0) {
         pointsCell.textContent = '-10';
-    } else {
+    } else if (answer !== 0 && correct !== 0) {
         pointsCell.textContent = Math.abs(answer - correct).toString();
+    } else {
+        pointsCell.textContent = '-';
     }
     
-    calculateSectionSums();
+    calculateSectionSums(playerIndex);
 }
 
-function calculateSectionSums() {
-    const playerCount = document.querySelectorAll('#playerHeaders th').length - 1;
+function calculateSectionSums(playerIndex) {
+    const rows = document.querySelectorAll('tbody tr');
+    let sections = [
+        {start: 2, end: 8, sumRow: 9},    // Questions 1-7
+        {start: 10, end: 16, sumRow: 17}, // Questions 8-14
+        {start: 18, end: 24, sumRow: 25}  // Questions 15-21
+    ];
     
-    for (let player = 1; player <= playerCount; player++) {
-        let sections = [[1,7], [8,14], [15,21]];
-        
-        sections.forEach((range, index) => {
-            let sum = 0;
-            for (let q = range[0]; q <= range[1]; q++) {
-                const points = document.querySelector(`tr:nth-child(${q + 2}) .points-cell:nth-child(${player * 3 + 1})`);
-                if (points && points.textContent !== '-') {
-                    sum += parseInt(points.textContent);
-                }
+    sections.forEach(section => {
+        let sum = 0;
+        for (let i = section.start; i <= section.end; i++) {
+            const pointsCell = rows[i].querySelector(`td:nth-child(${playerIndex * 3 + 3})`);
+            const points = pointsCell.textContent;
+            if (points !== '-') {
+                sum += parseInt(points);
             }
-            const sumRow = document.querySelector(`tr.sum-row:nth-child(${range[1] + 3}) .sum-cell:nth-child(${player + 1})`);
-            if (sumRow) sumRow.textContent = sum;
-        });
-    }
+        }
+        const sumCell = rows[section.sumRow].querySelector('td');
+        sumCell.textContent = sum;
+    });
 }
 
 function calculateFinalScore() {
