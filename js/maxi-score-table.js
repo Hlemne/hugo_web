@@ -31,53 +31,79 @@ document.addEventListener('DOMContentLoaded', () => {
             row.appendChild(td);
         });
     }
+
+    // Hide total score row initially
+    const totalRow = document.querySelector('.total-row');
+    if (totalRow) {
+        totalRow.style.display = 'none';
+    }
 });
 
 function calculateMaxiScores() {
-    // Get all rows
     const rows = document.querySelectorAll('tbody tr');
     const playerCount = document.querySelectorAll('#playerHeaders th').length - 1;
 
-    // Calculate for each player
     for (let player = 1; player <= playerCount; player++) {
         let upperSum = 0;
         let totalSum = 0;
+        let allUpperFieldsFilled = true;
 
-        // Calculate upper section (1-6)
+        // Check and calculate upper section (1-6)
         for (let i = 0; i < 6; i++) {
             const input = rows[i].querySelectorAll('input')[player - 1];
-            if (input && input.value) {
+            if (input && input.value !== '') {
                 upperSum += parseInt(input.value);
+            } else {
+                allUpperFieldsFilled = false;
             }
         }
 
-        // Update upper section sum
+        // Update upper section sum only if all fields are filled
         const sumRow = rows[6].querySelectorAll('td')[player];
-        sumRow.textContent = upperSum;
+        sumRow.textContent = allUpperFieldsFilled ? upperSum : '-';
 
-        // Check for bonus (63 or more in upper section gets 35 bonus points)
+        // Check for bonus (63 or more in upper section gets 50 bonus points)
         const bonusRow = rows[7].querySelectorAll('td')[player];
-        bonusRow.textContent = upperSum >= 63 ? '35' : '0';
+        bonusRow.textContent = (allUpperFieldsFilled && upperSum >= 63) ? '50' : '-';
+    }
+}
 
-        // Calculate total including bonus
-        totalSum = upperSum + (upperSum >= 63 ? 35 : 0);
+function calculateFinalScore() {
+    const rows = document.querySelectorAll('tbody tr');
+    const playerCount = document.querySelectorAll('#playerHeaders th').length - 1;
+    const totalRow = document.querySelector('.total-row');
+    
+    // Show total row when calculating final score
+    if (totalRow) {
+        totalRow.style.display = 'table-row';
+    }
+
+    for (let player = 1; player <= playerCount; player++) {
+        let totalSum = 0;
+        
+        // Get upper section sum and bonus
+        const upperSum = parseInt(rows[6].querySelectorAll('td')[player].textContent) || 0;
+        const bonus = parseInt(rows[7].querySelectorAll('td')[player].textContent) || 0;
+        
+        totalSum = upperSum + bonus;
 
         // Calculate lower section
         for (let i = 8; i < rows.length - 1; i++) {
             const input = rows[i].querySelectorAll('input')[player - 1];
-            if (input && input.value) {
+            if (input && input.value !== '') {
                 totalSum += parseInt(input.value);
             }
         }
 
         // Update total score
-        const totalRow = rows[rows.length - 1].querySelectorAll('td')[player];
-        totalRow.textContent = totalSum;
+        const totalCell = rows[rows.length - 1].querySelectorAll('td')[player];
+        totalCell.textContent = totalSum || '-';
+        totalCell.style.fontWeight = 'bold';
+        totalCell.style.backgroundColor = '#e8f4f8';
     }
 }
 
 function saveScores() {
-    // TODO: Add save functionality
     console.log('Saving Maxi Yatzy scores...');
     alert('Scores saved!');
 }
