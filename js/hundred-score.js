@@ -85,13 +85,16 @@ function calculatePoints(row, playerIndex) {
     
     if (!answerInput || !correctInput) return;
     
-    const answer = parseInt(answerInput.value) || 0;
-    const correct = parseInt(correctInput.value) || 0;
+    const answer = parseInt(answerInput.value);
+    const correct = parseInt(correctInput.value);
     
-    if (answer === correct && answer !== 0) {
-        pointsCell.textContent = '-10';
-    } else if (answer !== 0 && correct !== 0) {
-        pointsCell.textContent = Math.abs(answer - correct).toString();
+    // Only calculate if both inputs have values
+    if (!isNaN(answer) && !isNaN(correct)) {
+        if (answer === correct) {
+            pointsCell.textContent = '-10';
+        } else {
+            pointsCell.textContent = Math.abs(answer - correct).toString();
+        }
     } else {
         pointsCell.textContent = '-';
     }
