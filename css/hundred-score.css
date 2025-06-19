@@ -12,61 +12,6 @@
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    font-family: 'Segoe UI', Arial, sans-serif;
-}
-
-.score-table th,
-.score-table td {
-    padding: 12px 8px;
-    text-align: center;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.score-table th {
-    background: #2c3e50;
-    color: white;
-    font-weight: 500;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.score-table input {
-    width: 50px;
-    padding: 8px;
-    border: 2px solid #e0e0e0;
-    border-radius: 6px;
-    text-align: center;
-    font-size: 14px;
-    transition: all 0.2s ease;
-}
-
-.score-table input:focus {
-    border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-    outline: none;
-}
-
-.points-cell {
-    font-weight: 500;
-    color: #2c3e50;
-    background: #f8f9fa;
-}
-
-.sum-row td {
-    background: #ecf0f1;
-    font-weight: 600;
-    color: #2c3e50;
-    border-top: 2px solid #bdc3c7;
-    border-bottom: 2px solid #bdc3c7;
-}
-
-.total-row td {
-    background: #3498db;
-    color: white;
-    font-weight: 600;
-    font-size: 1.1em;
-    border-top: 2px solid #2980b9;
 }
 
 /* Question column styling */
@@ -75,84 +20,92 @@
     color: white;
     font-weight: 500;
     width: 80px;
+    text-align: center;
 }
 
-/* Section spacing */
-tr.section-break {
-    height: 20px;
+/* Player name styling */
+.player-name {
     background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    padding: 8px;
 }
 
-/* Hover effects */
-.score-table tr:hover:not(.sum-row):not(.total-row) {
-    background: rgba(52, 152, 219, 0.05);
+/* Input field styling */
+.score-input {
+    width: 45px;
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+    margin: 2px;
 }
 
-/* Mobile optimizations */
+.score-input:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+/* Cell styling */
+.score-table th,
+.score-table td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+}
+
+.score-table th {
+    background: #2c3e50;
+    color: white;
+    padding: 12px 8px;
+}
+
+/* Sum rows styling */
+.sum-row td {
+    background: #ecf0f1;
+    font-weight: bold;
+    border-top: 2px solid #bdc3c7;
+    border-bottom: 2px solid #bdc3c7;
+}
+
+/* Total row styling */
+.total-row td {
+    background: #3498db;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+/* Points column styling */
+.points-cell {
+    background: #f8f9fa;
+    font-weight: 500;
+}
+
+/* Mobile optimization */
 @media screen and (max-width: 768px) {
     .score-table-container {
         padding: 0.5rem;
         margin: 0.5rem;
-        border-radius: 8px;
     }
 
     .score-table th,
     .score-table td {
-        padding: 8px 4px;
+        padding: 6px 4px;
     }
 
-    .score-table input {
-        width: 40px;
-        padding: 6px;
-        font-size: 13px;
+    .score-input {
+        width: 35px;
+        padding: 4px;
     }
 
     .score-table td:first-child {
         position: sticky;
         left: 0;
-        z-index: 5;
+        z-index: 1;
     }
-}
-
-/* Nice animations */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.total-row {
-    animation: fadeIn 0.3s ease-out;
-}
-
-/* Button styling */
-.button-container {
-    margin-top: 2rem;
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-}
-
-.btn {
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    border: none;
-    cursor: pointer;
-}
-
-.btn.blue {
-    background: #3498db;
-    color: white;
-    box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
-}
-
-.btn.blue:hover {
-    background: #2980b9;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 8px rgba(52, 152, 219, 0.3);
-}
-
-.btn:active {
-    transform: translateY(1px);
 }

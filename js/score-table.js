@@ -48,6 +48,42 @@ document.addEventListener('DOMContentLoaded', () => {
     if (totalRow) {
         totalRow.style.display = 'none';
     }
+
+    // Add navigation warning
+    window.addEventListener('beforeunload', function(e) {
+        const inputs = document.querySelectorAll('input[type="number"], input.player-name');
+        let hasEnteredData = false;
+        
+        inputs.forEach(input => {
+            if (input.value && input.value !== input.defaultValue) {
+                hasEnteredData = true;
+            }
+        });
+
+        if (hasEnteredData) {
+            e.preventDefault();
+            e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+            return e.returnValue;
+        }
+    });
+
+    // Add confirmation to back button
+    document.querySelector('a[href="yatzy.html"]').addEventListener('click', function(e) {
+        const inputs = document.querySelectorAll('input[type="number"], input.player-name');
+        let hasEnteredData = false;
+        
+        inputs.forEach(input => {
+            if (input.value && input.value !== input.defaultValue) {
+                hasEnteredData = true;
+            }
+        });
+
+        if (hasEnteredData) {
+            if (!confirm('Are you sure you want to go back? All entered scores will be lost.')) {
+                e.preventDefault();
+            }
+        }
+    });
 });
 
 function calculateScores() {

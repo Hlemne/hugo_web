@@ -93,6 +93,44 @@ document.addEventListener('DOMContentLoaded', () => {
     if (calculateButton) {
         calculateButton.addEventListener('click', calculateFinalTotal);
     }
+
+    // Add navigation warning
+    window.addEventListener('beforeunload', function(e) {
+        // Check if any scores have been entered
+        const inputs = document.querySelectorAll('input[type="number"], input.player-name');
+        let hasEnteredData = false;
+        
+        inputs.forEach(input => {
+            if (input.value && input.value !== input.defaultValue) {
+                hasEnteredData = true;
+            }
+        });
+
+        if (hasEnteredData) {
+            e.preventDefault();
+            // Custom message (note: modern browsers show their own message)
+            e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+            return e.returnValue;
+        }
+    });
+
+    // Add confirmation to back button
+    document.querySelector('a[href="hundred.html"]').addEventListener('click', function(e) {
+        const inputs = document.querySelectorAll('input[type="number"], input.player-name');
+        let hasEnteredData = false;
+        
+        inputs.forEach(input => {
+            if (input.value && input.value !== input.defaultValue) {
+                hasEnteredData = true;
+            }
+        });
+
+        if (hasEnteredData) {
+            if (!confirm('Are you sure you want to go back? All entered scores will be lost.')) {
+                e.preventDefault();
+            }
+        }
+    });
 });
 
 function calculatePoints(row, playerIndex) {
