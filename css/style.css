@@ -6,7 +6,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-image: url('../image/beach_ocean.jpg');
+    background-image: url('/hugo_web/image/beach_ocean.jpg'); /* Updated path for GitHub Pages */
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
