@@ -82,6 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (totalRow) {
         totalRow.style.display = 'none';
     }
+
+    // Add event listener for Calculate Score button
+    const calculateButton = document.querySelector('.btn.blue');
+    if (calculateButton) {
+        calculateButton.addEventListener('click', calculateFinalTotal);
+    }
 });
 
 function calculatePoints(row, playerIndex) {
