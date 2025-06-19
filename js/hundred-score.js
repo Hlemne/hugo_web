@@ -109,15 +109,23 @@ function calculateSectionSums(playerIndex) {
     
     sections.forEach(section => {
         let sum = 0;
+        // Calculate sum for each section
         for (let i = section.start; i <= section.end; i++) {
             const pointsCell = rows[i].querySelector(`td:nth-child(${playerIndex * 3 + 3})`);
-            const points = pointsCell.textContent;
-            if (points !== '-') {
-                sum += parseInt(points);
+            if (pointsCell && pointsCell.textContent !== '-') {
+                const points = parseInt(pointsCell.textContent);
+                if (!isNaN(points)) {
+                    sum += points;
+                }
             }
         }
-        const sumCell = rows[section.sumRow].querySelector('td');
-        sumCell.textContent = sum;
+        
+        // Update the sum cell for the current section
+        const sumCell = rows[section.sumRow].querySelector(`td:nth-child(${playerIndex * 3 - 1})`);
+        if (sumCell) {
+            sumCell.colSpan = "3";
+            sumCell.textContent = sum;
+        }
     });
 }
 
@@ -126,12 +134,24 @@ function calculateFinalScore() {
     
     for (let player = 1; player <= playerCount; player++) {
         let totalSum = 0;
-        document.querySelectorAll('.sum-cell').forEach(cell => {
-            if (parseInt(cell.textContent)) {
-                totalSum += parseInt(cell.textContent);
+        const sections = document.querySelectorAll('.sum-row');
+        
+        // Sum up all section totals
+        sections.forEach(section => {
+            const sumCell = section.querySelector(`td:nth-child(${player * 3 - 1})`);
+            if (sumCell && sumCell.textContent) {
+                totalSum += parseInt(sumCell.textContent) || 0;
             }
         });
-        const totalRow = document.querySelector('.total-row .sum-cell');
-        totalRow.textContent = totalSum;
+        
+        // Update total score
+        const totalRow = document.querySelector('.total-row');
+        const totalCell = totalRow.querySelector(`td:nth-child(${player * 3 - 1})`);
+        if (totalCell) {
+            totalCell.colSpan = "3";
+            totalCell.textContent = totalSum;
+            totalCell.style.backgroundColor = '#3498db';
+            totalCell.style.color = 'white';
+        }
     }
 }
