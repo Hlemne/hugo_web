@@ -76,6 +76,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Hide total row initially
+    const totalRow = document.querySelector('.total-row');
+    if (totalRow) {
+        totalRow.style.display = 'none';
+    }
 });
 
 function calculatePoints(row, playerIndex) {
@@ -135,41 +141,36 @@ function calculateSectionSums() {
         });
     }
 
-    // Calculate final total
-    calculateFinalTotal();
+    // Remove the automatic total calculation
+    // calculateFinalTotal();
 }
 
 function calculateFinalTotal() {
+    const totalRow = document.querySelector('.total-row');
+    if (totalRow) {
+        totalRow.style.display = 'table-row'; // Show the total row
+    }
+
     const playerCount = document.querySelectorAll('#playerHeaders th').length - 1;
     
     for (let player = 1; player <= playerCount; player++) {
         let totalSum = 0;
-        
-        // Get all section sum rows
         const sumRows = document.querySelectorAll('.sum-row');
         
-        // Sum up all available section totals
         sumRows.forEach(sumRow => {
-            const sumCell = sumRow.querySelector(`td:nth-child(${player * 3 - 1})`);
+            const sumCell = sumRow.querySelector(`td:nth-child(${(player - 1) * 3 + 2})`);
             if (sumCell && sumCell.textContent && sumCell.textContent !== '-') {
                 totalSum += parseInt(sumCell.textContent) || 0;
             }
         });
         
-        // Update total score
-        const totalRow = document.querySelector('.total-row');
-        if (totalRow) {
-            const totalCell = totalRow.querySelector(`td:nth-child(${player * 3 - 1})`);
-            if (totalCell) {
-                totalCell.colSpan = "3";
-                totalCell.textContent = totalSum;
-                totalCell.style.backgroundColor = '#3498db';
-                totalCell.style.color = 'white';
-                totalCell.style.fontWeight = 'bold';
-            }
+        const totalCell = totalRow.querySelector(`td:nth-child(${(player - 1) * 3 + 2})`);
+        if (totalCell) {
+            totalCell.colSpan = "3";
+            totalCell.textContent = totalSum;
+            totalCell.style.backgroundColor = '#3498db';
+            totalCell.style.color = 'white';
+            totalCell.style.fontWeight = 'bold';
         }
     }
 }
-
-// Make sure to add this event listener to the Calculate Score button in HTML:
-document.querySelector('.btn.blue').addEventListener('click', calculateFinalTotal);
