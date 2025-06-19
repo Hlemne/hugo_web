@@ -144,18 +144,22 @@ function calculateFinalTotal() {
     
     for (let player = 1; player <= playerCount; player++) {
         let totalSum = 0;
+        
+        // Get all section sum rows
         const sumRows = document.querySelectorAll('.sum-row');
         
-        sumRows.forEach(row => {
-            const sumCell = row.querySelector(`td:nth-child(${player * 3 + 1})`);
-            if (sumCell && sumCell.textContent) {
+        // Sum up all available section totals
+        sumRows.forEach(sumRow => {
+            const sumCell = sumRow.querySelector(`td:nth-child(${player * 3 - 1})`);
+            if (sumCell && sumCell.textContent && sumCell.textContent !== '-') {
                 totalSum += parseInt(sumCell.textContent) || 0;
             }
         });
-
+        
+        // Update total score
         const totalRow = document.querySelector('.total-row');
         if (totalRow) {
-            const totalCell = totalRow.querySelector(`td:nth-child(${player * 3 + 1})`);
+            const totalCell = totalRow.querySelector(`td:nth-child(${player * 3 - 1})`);
             if (totalCell) {
                 totalCell.colSpan = "3";
                 totalCell.textContent = totalSum;
@@ -166,3 +170,6 @@ function calculateFinalTotal() {
         }
     }
 }
+
+// Make sure to add this event listener to the Calculate Score button in HTML:
+document.querySelector('.btn.blue').addEventListener('click', calculateFinalTotal);
