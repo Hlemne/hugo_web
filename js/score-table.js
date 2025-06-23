@@ -92,25 +92,22 @@ function calculateScores() {
 
     for (let player = 1; player <= playerCount; player++) {
         let upperSum = 0;
-        let allUpperFieldsFilled = true;
 
-        // Check and calculate upper section (1-6)
+        // Calculate upper section (1-6), regardless of whether all are filled
         for (let i = 0; i < 6; i++) {
             const input = rows[i].querySelectorAll('input')[player - 1];
             if (input && input.value !== '') {
                 upperSum += parseInt(input.value);
-            } else {
-                allUpperFieldsFilled = false;
             }
         }
 
-        // Update upper section sum only if all fields are filled
+        // Always show upper section sum
         const sumRow = rows[6].querySelectorAll('td')[player];
-        sumRow.textContent = allUpperFieldsFilled ? upperSum : '-';
+        sumRow.textContent = upperSum;
 
-        // Check for bonus (63 or more in upper section gets 50 bonus points)
+        // Show bonus if upperSum >= 63, otherwise show 0
         const bonusRow = rows[7].querySelectorAll('td')[player];
-        bonusRow.textContent = (allUpperFieldsFilled && upperSum >= 63) ? '50' : '-';
+        bonusRow.textContent = upperSum >= 63 ? '50' : '0';
     }
 }
 
