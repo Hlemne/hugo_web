@@ -140,18 +140,21 @@ function calculatePoints(row, playerIndex) {
     const pointsCell = row.querySelector(`td:nth-child(${(playerIndex - 1) * 3 + 4})`);
     
     if (!answerInput || !correctInput) return;
-    
-    const answer = parseInt(answerInput.value) || 0;
-    const correct = parseInt(correctInput.value) || 0;
-    
-    if (answer === correct && answer !== 0) {
-        pointsCell.textContent = '-10';
-    } else if (answer !== 0 && correct !== 0) {
-        pointsCell.textContent = Math.abs(answer - correct).toString();
-    } else {
+
+    const answerVal = answerInput.value.trim();
+    const correctVal = correctInput.value.trim();
+
+    const answer = answerVal === '' ? null : parseInt(answerVal);
+    const correct = correctVal === '' ? null : parseInt(correctVal);
+
+    if (answer === null || correct === null || isNaN(answer) || isNaN(correct)) {
         pointsCell.textContent = '-';
+    } else if (answer === correct) {
+        pointsCell.textContent = '-10';
+    } else {
+        pointsCell.textContent = Math.abs(answer - correct).toString();
     }
-    
+
     calculateSectionSums();
 }
 
