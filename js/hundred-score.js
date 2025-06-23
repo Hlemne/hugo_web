@@ -39,7 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add input cells for each row
         rows.forEach(row => {
             if (row.classList.contains('sum-row') || row.classList.contains('total-row')) {
-                // Sum rows get three columns with one merged cell
+                // First, clear existing player columns (but keep the label cell)
+                while (row.children.length > 1) {
+                    row.removeChild(row.lastChild);
+                }
+        
+                // Add one <td colspan=3> for this player
                 const td = document.createElement('td');
                 td.colSpan = "3";
                 td.className = 'sum-cell';
