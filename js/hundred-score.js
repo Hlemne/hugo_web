@@ -157,42 +157,43 @@ function calculatePoints(row, playerIndex) {
 
 function calculateSectionSums() {
     const playerCount = document.querySelectorAll('#playerHeaders th').length - 1;
-    
-    for (let player = 1; player <= playerCount; player++) {
-        const sections = [
-            { rows: [2, 3, 4, 5, 6, 7, 8], sumRow: 9 },
-            { rows: [10, 11, 12, 13, 14, 15, 16], sumRow: 17 },
-            { rows: [18, 19, 20, 21, 22, 23, 24], sumRow: 25 }
-        ];
 
-        sections.forEach(section => {
+    // Get all table rows excluding headers
+    const allRows = Array.from(document.querySelectorAll('tbody tr'));
+
+    // Identify sections: groups of 7 question rows followed by a sum-row
+    let currentGroup = [];
+    let sectionGroups = [];
+    allRows.forEach(row => {
+        if (row.classList.contains('sum-row')) {
+            sectionGroups.push({ questionRows: [...currentGroup], sumRow: row });
+            currentGroup = [];
+        } else if (!row.classList.contains('total-row')) {
+            currentGroup.push(row);
+        }
+    });
+
+    // Process each section for each player
+    for (let player = 1; player <= playerCount; player++) {
+        sectionGroups.forEach(section => {
             let sectionSum = 0;
-            section.rows.forEach(rowIndex => {
-                const row = document.querySelector(`tbody tr:nth-child(${rowIndex})`);
-                if (row) {
-                    const pointsCell = row.querySelector(`td:nth-child(${(player - 1) * 3 + 4})`);
-                    if (pointsCell && pointsCell.textContent !== '-') {
-                        const points = parseInt(pointsCell.textContent);
-                        if (!isNaN(points)) {
-                            sectionSum += points;
-                        }
+            section.questionRows.forEach(row => {
+                const pointsCell = row.querySelector(`td:nth-child(${(player - 1) * 3 + 4})`);
+                if (pointsCell && pointsCell.textContent !== '-') {
+                    const points = parseInt(pointsCell.textContent);
+                    if (!isNaN(points)) {
+                        sectionSum += points;
                     }
                 }
             });
 
-            const sumRow = document.querySelector(`tbody tr:nth-child(${section.sumRow})`);
-            if (sumRow) {
-                const sumCell = sumRow.querySelector(`td:nth-child(${(player - 1) * 3 + 2})`);
-                if (sumCell) {
-                    sumCell.colSpan = "3";
-                    sumCell.textContent = sectionSum;
-                }
+            const sumCell = section.sumRow.querySelector(`td:nth-child(${(player - 1) * 3 + 2})`);
+            if (sumCell) {
+                sumCell.colSpan = "3";
+                sumCell.textContent = sectionSum;
             }
         });
     }
-
-    // Remove the automatic total calculation
-    // calculateFinalTotal();
 }
 
 function calculateFinalTotal() {
