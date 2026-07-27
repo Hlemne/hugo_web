@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0,
+        maximum-scale=1.0, user-scalable=no"
+    >
+
+    <title>Chicago – Poäng</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chicago.css">
+</head>
+
+<body>
+
+<div class="container chicago-page">
+
+    <div class="chicago-game">
+
+        <div class="top-bar">
+
+            <a href="index.html" class="small-link">
+                Hem
+            </a>
+
+            <h1>Chicago</h1>
+
+            <button
+                class="small-link reset-button"
+                onclick="newGame()"
+            >
+                Nytt spel
+            </button>
+
+        </div>
+
+        <div id="winnerBox" class="winner-box hidden">
+
+            <div class="winner-icon">
+                🏆
+            </div>
+
+            <div>
+
+                <div class="winner-label">
+                    Vinnare
+                </div>
+
+                <div id="winnerName" class="winner-name"></div>
+
+            </div>
+
+        </div>
+
+        <div id="chicagoPanel" class="chicago-panel hidden">
+
+            <div class="panel-label">
+                Chicago pågår
+            </div>
+
+            <h2 id="chicagoPlayerName"></h2>
+
+            <button
+                class="action-button success-button"
+                onclick="completeChicago()"
+            >
+                Klarade Chicago
+            </button>
+
+            <button
+                class="action-button fail-button"
+                onclick="failChicago()"
+            >
+                Misslyckades −15
+            </button>
+
+            <button
+                class="action-button break-button"
+                onclick="showBreakerSelection()"
+            >
+                Någon bräckte
+            </button>
+
+            <div
+                id="breakerSelection"
+                class="breaker-selection hidden"
+            >
+
+                <label for="breakerSelect">
+                    Vem bräckte?
+                </label>
+
+                <select id="breakerSelect"></select>
+
+                <button
+                    class="action-button confirm-button"
+                    onclick="breakChicago()"
+                >
+                    Bekräfta
+                </button>
+
+                <button
+                    class="cancel-button"
+                    onclick="hideBreakerSelection()"
+                >
+                    Avbryt
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="round-box">
+
+            <div>
+
+                <div class="panel-label">
+                    Aktuell runda
+                </div>
+
+                <h2 id="roundNumber">
+                    Runda 1
+                </h2>
+
+            </div>
+
+            <button
+                class="round-button"
+                onclick="nextRound()"
+            >
+                Nästa runda
+            </button>
+
+        </div>
+
+        <div class="scoreboard-box">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <div class="panel-label">
+                        Poängtavla
+                    </div>
+
+                    <h2>Spelare</h2>
+
+                </div>
+
+                <button
+                    class="undo-button"
+                    onclick="undoAction()"
+                >
+                    Ångra
+                </button>
+
+            </div>
+
+            <div id="scoreboard"></div>
+
+        </div>
+
+        <div class="history-box">
+
+            <h2>Senaste händelser</h2>
+
+            <div id="history">
+                Inga händelser ännu.
+            </div>
+
+        </div>
+
+        <div class="rules-box">
+
+            <h2>Regler</h2>
+
+            <p>
+                Vinst kräver minst 52 poäng och minst 1 Chicago.
+            </p>
+
+            <p>
+                Kortbyten stoppas automatiskt vid 42 poäng.
+            </p>
+
+            <p>
+                Misslyckad Chicago ger −15 poäng och −1 Chicago.
+            </p>
+
+            <p>
+                Bräckt Chicago ger −15 poäng och −1 Chicago
+                för spelaren som sade Chicago.
+            </p>
+
+            <p>
+                Den som bräcker får +5 poäng.
+            </p>
+
+            <p>
+                Chicago-räknaren kan aldrig bli lägre än 0.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="js/chicago.js"></script>
+
+</body>
+
+</html>
