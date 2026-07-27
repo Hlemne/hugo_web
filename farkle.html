@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Farkle Game</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome to Farkle</h1>
+
+        <div class="player-form">
+            <label for="playerCount">How many players are you?</label>
+
+            <input
+                type="number"
+                id="playerCount"
+                min="2"
+                max="8"
+                value="2"
+            >
+
+            <button class="btn green" onclick="startGame()">
+                Start Game
+            </button>
+        </div>
+
+        <div class="button-container">
+            <a href="index.html" class="btn red">Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        function startGame() {
+            const playerCount = document.getElementById('playerCount').value;
+
+            if (playerCount < 2 || playerCount > 8) {
+                alert('Please choose between 2 and 8 players.');
+                return;
+            }
+
+            localStorage.setItem('farklePlayerCount', playerCount);
+
+            alert(
+                'Farkle will start with ' +
+                playerCount +
+                ' players!'
+            );
+        }
+    </script>
+</body>
+</html>
