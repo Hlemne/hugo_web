@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chicago</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chicago.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="game-card">
+
+        <h1>Chicago</h1>
+
+        <p class="subtitle">
+            Första spelaren till minst <strong>52 poäng</strong>
+            och minst <strong>1 Chicago</strong> vinner.
+        </p>
+
+        <label>Antal spelare</label>
+
+        <select id="playerCount" onchange="createPlayers()">
+
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4" selected>4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+
+        </select>
+
+        <div id="playerInputs"></div>
+
+        <button class="btn purple" onclick="startGame()">
+            Starta spel
+        </button>
+
+        <br><br>
+
+        <a href="index.html" class="btn red">
+            Tillbaka
+        </a>
+
+    </div>
+
+</div>
+
+<script>
+
+function createPlayers(){
+
+    const amount =
+        Number(document.getElementById("playerCount").value);
+
+    const container =
+        document.getElementById("playerInputs");
+
+    container.innerHTML="";
+
+    for(let i=1;i<=amount;i++){
+
+        container.innerHTML += `
+        <input
+            id="player${i}"
+            placeholder="Spelare ${i}"
+            maxlength="20"
+        >
+        `;
+
+    }
+
+}
+
+createPlayers();
+
+function startGame(){
+
+    const amount =
+        Number(document.getElementById("playerCount").value);
+
+    const players=[];
+
+    for(let i=1;i<=amount;i++){
+
+        const name=
+            document
+            .getElementById("player"+i)
+            .value
+            .trim();
+
+        players.push({
+            name:name || "Spelare "+i,
+            score:0,
+            chicago:0
+        });
+
+    }
+
+    localStorage.setItem(
+        "chicagoGame",
+        JSON.stringify(players)
+    );
+
+    localStorage.setItem(
+        "chicagoRound",
+        "1"
+    );
+
+    localStorage.removeItem("activeChicago");
+
+    window.location="chicago-score.html";
+
+}
+
+</script>
+
+</body>
+</html>
