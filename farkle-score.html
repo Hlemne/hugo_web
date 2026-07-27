@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0,
+        maximum-scale=1.0, user-scalable=no"
+    >
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <title>Farkle – Poängtavla</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/farkle.css">
+</head>
+
+<body>
+    <div class="container farkle-game-container">
+        <div class="farkle-game">
+            <header class="game-header">
+                <a href="index.html" class="small-link">
+                    Hem
+                </a>
+
+                <h1>Farkle</h1>
+
+                <button
+                    class="small-link reset-link"
+                    onclick="confirmNewGame()"
+                >
+                    Nytt spel
+                </button>
+            </header>
+
+            <section class="current-player-card">
+                <p class="small-heading">Aktuell spelare</p>
+
+                <h2 id="currentPlayerName">
+                    Spelare
+                </h2>
+
+                <div class="turn-score">
+                    <span>Poäng denna tur</span>
+                    <strong id="turnScore">0</strong>
+                </div>
+            </section>
+
+            <section class="score-entry-card">
+                <label for="scoreInput">
+                    Poäng från senaste kastet
+                </label>
+
+                <input
+                    type="number"
+                    id="scoreInput"
+                    min="0"
+                    step="50"
+                    inputmode="numeric"
+                    placeholder="Exempel: 350"
+                >
+
+                <div class="quick-score-buttons">
+                    <button onclick="addQuickScore(50)">+50</button>
+                    <button onclick="addQuickScore(100)">+100</button>
+                    <button onclick="addQuickScore(200)">+200</button>
+                    <button onclick="addQuickScore(500)">+500</button>
+                    <button onclick="addQuickScore(1000)">+1000</button>
+                </div>
+
+                <button
+                    class="action-button continue-button"
+                    onclick="addThrowScore()"
+                >
+                    Lägg till kast och fortsätt
+                </button>
+
+                <button
+                    class="action-button bank-button"
+                    onclick="bankTurn()"
+                >
+                    Spara turpoängen
+                </button>
+
+                <button
+                    class="action-button farkle-button"
+                    onclick="farkleTurn()"
+                >
+                    Farkle – förlora turpoängen
+                </button>
+            </section>
+
+            <section class="scoreboard-card">
+                <div class="scoreboard-heading">
+                    <h2>Poängtavla</h2>
+
+                    <span id="roundNumber">
+                        Runda 1
+                    </span>
+                </div>
+
+                <div id="scoreboard" class="scoreboard"></div>
+            </section>
+
+            <section class="history-card">
+                <div class="history-heading">
+                    <h2>Senaste händelser</h2>
+
+                    <button onclick="undoLastAction()">
+                        Ångra
+                    </button>
+                </div>
+
+                <div id="gameHistory" class="game-history">
+                    Inga registrerade rundor ännu.
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="js/farkle.js"></script>
+</body>
+</html>
