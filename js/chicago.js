@@ -245,14 +245,14 @@ function completeChicago(){
 
     const player=game[activeChicago];
 
+    player.score += 15;
     player.chicago++;
 
     addHistory(
 
         player.name+
-        " klarade Chicago och har nu "+
-        player.chicago+
-        " Chicago."
+        " klarade Chicago och fick +15 poäng. Chicago: "+
+        player.chicago+"."
 
     );
 
