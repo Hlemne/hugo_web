@@ -1,56 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Farkle Game</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0,
+        maximum-scale=1.0, user-scalable=no"
+    >
+
+    <title>Farkle – Spelare</title>
 
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/farkle.css">
 </head>
 
 <body>
     <div class="container">
-        <h1>Welcome to Farkle</h1>
+        <div class="farkle-start-card">
+            <h1>Farkle</h1>
 
-        <div class="player-form">
-            <label for="playerCount">How many players are you?</label>
+            <p class="farkle-description">
+                Lägg till spelarna och starta poängräkningen.
+            </p>
 
-            <input
-                type="number"
-                id="playerCount"
-                min="2"
-                max="8"
-                value="2"
-            >
+            <label for="playerCount">Antal spelare</label>
 
-            <button class="btn green" onclick="startGame()">
-                Start Game
+            <select id="playerCount" onchange="createPlayerInputs()">
+                <option value="2">2 spelare</option>
+                <option value="3">3 spelare</option>
+                <option value="4">4 spelare</option>
+                <option value="5">5 spelare</option>
+                <option value="6">6 spelare</option>
+                <option value="7">7 spelare</option>
+                <option value="8">8 spelare</option>
+            </select>
+
+            <div id="playerInputs" class="player-inputs"></div>
+
+            <button class="btn green start-button" onclick="startFarkle()">
+                Starta spelet
             </button>
-        </div>
 
-        <div class="button-container">
-            <a href="index.html" class="btn red">Back to Home</a>
+            <a href="index.html" class="btn red back-button">
+                Tillbaka
+            </a>
         </div>
     </div>
 
     <script>
-        function startGame() {
-            const playerCount = document.getElementById('playerCount').value;
+        function createPlayerInputs() {
+            const playerCount =
+                Number(document.getElementById('playerCount').value);
 
-            if (playerCount < 2 || playerCount > 8) {
-                alert('Please choose between 2 and 8 players.');
-                return;
+            const playerInputs =
+                document.getElementById('playerInputs');
+
+            playerInputs.innerHTML = '';
+
+            for (let i = 1; i <= playerCount; i++) {
+                const input = document.createElement('input');
+
+                input.type = 'text';
+                input.id = `player${i}`;
+                input.placeholder = `Spelare ${i}`;
+                input.maxLength = 20;
+
+                playerInputs.appendChild(input);
+            }
+        }
+
+        function startFarkle() {
+            const playerCount =
+                Number(document.getElementById('playerCount').value);
+
+            const players = [];
+
+            for (let i = 1; i <= playerCount; i++) {
+                const enteredName =
+                    document.getElementById(`player${i}`).value.trim();
+
+                players.push(
+                    enteredName || `Spelare ${i}`
+                );
             }
 
-            localStorage.setItem('farklePlayerCount', playerCount);
-
-            alert(
-                'Farkle will start with ' +
-                playerCount +
-                ' players!'
+            localStorage.setItem(
+                'farklePlayers',
+                JSON.stringify(players)
             );
+
+            localStorage.removeItem('farkleGameState');
+
+            window.location.href = 'farkle-score.html';
         }
+
+        createPlayerInputs();
     </script>
 </body>
 </html>
