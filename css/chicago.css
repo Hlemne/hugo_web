@@ -935,3 +935,41 @@
     opacity: 0.45;
     cursor: not-allowed;
 }
+
+.main-four-kind-button {
+    width: 100%;
+    min-height: 58px;
+    margin-top: -3px;
+    margin-bottom: 12px;
+    padding: 13px;
+    color: white;
+    background: #8e44ad;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.main-four-kind-button:active {
+    transform: scale(0.98);
+}
+
+.four-kind-panel {
+    border-color: #8e44ad;
+}
+
+.four-kind-player-choice {
+    background: #8e44ad;
+}
+
+.reset-everyone-button {
+    background: #c0392b;
+}
+
+.four-kind-points-button {
+    background: #27ae60;
+}
+
