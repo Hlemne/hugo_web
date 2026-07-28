@@ -12,7 +12,8 @@ function createInitialState() {
     return {
         players: savedPlayers.map((name) => ({
             name: name,
-            totalScore: 0
+            totalScore: 0,
+            consecutiveFarkles: 0
         })),
         currentPlayerIndex: 0,
         turnScore: 0,
@@ -33,6 +34,12 @@ function loadGameState() {
     try {
         const parsedState = JSON.parse(savedState);
 
+        if (
+            !parsedState.players ||
+            parsedState.players.length === 0
+        ) {
+            return createInitialState();
+        }
         if (
             !parsedState.players ||
             parsedState.players.length === 0
@@ -128,12 +135,14 @@ function addThrowScore() {
 
     saveSnapshot();
 
-    gameState.turnScore += score;
-
     const currentPlayer =
         gameState.players[
             gameState.currentPlayerIndex
         ];
+    
+    gameState.turnScore += score;
+    
+    currentPlayer.consecutiveFarkles = 0;
 
     gameState.history.unshift(
         `${currentPlayer.name} fick ${score} poäng ` +
@@ -179,7 +188,9 @@ function bankTurn() {
 
     currentPlayer.totalScore +=
         gameState.turnScore;
-
+        
+    currentPlayer.consecutiveFarkles = 0;
+    
     gameState.history.unshift(
         `${currentPlayer.name} sparade ` +
         `${gameState.turnScore} poäng. ` +
@@ -200,13 +211,38 @@ function farkleTurn() {
             gameState.currentPlayerIndex
         ];
 
-    const message =
-        gameState.turnScore > 0
-            ? `${currentPlayer.name} förlorar ` +
-              `${gameState.turnScore} turpoäng.`
-            : `${currentPlayer.name} fick Farkle.`;
-
     saveSnapshot();
+
+    currentPlayer.consecutiveFarkles += 1;
+
+    let message;
+
+    if (currentPlayer.consecutiveFarkles >= 3) {
+        currentPlayer.totalScore -= 1000;
+
+        message =
+            `${currentPlayer.name} fick sin tredje ` +
+            `Farkle i rad och förlorar 1 000 poäng. ` +
+            `Total: ${currentPlayer.totalScore}.`;
+
+        currentPlayer.consecutiveFarkles = 0;
+    } else {
+        const lostTurnScore =
+            gameState.turnScore;
+
+        if (lostTurnScore > 0) {
+            message =
+                `${currentPlayer.name} fick Farkle och ` +
+                `förlorar ${lostTurnScore} turpoäng. ` +
+                `Farkle i rad: ` +
+                `${currentPlayer.consecutiveFarkles}.`;
+        } else {
+            message =
+                `${currentPlayer.name} fick Farkle. ` +
+                `Farkle i rad: ` +
+                `${currentPlayer.consecutiveFarkles}.`;
+        }
+    }
 
     gameState.history.unshift(message);
 
@@ -337,6 +373,19 @@ function renderScoreboard() {
         name.className = 'player-name';
         name.textContent = player.name;
 
+        const farkleStreak =
+            document.createElement('span');
+        
+        farkleStreak.className =
+            'player-farkle-streak';
+        
+        farkleStreak.textContent =
+            player.consecutiveFarkles > 0
+                ? '❌'.repeat(
+                    player.consecutiveFarkles
+                )
+                : '';
+
         const total =
             document.createElement('span');
 
@@ -346,6 +395,7 @@ function renderScoreboard() {
 
         row.appendChild(position);
         row.appendChild(name);
+        row.appendChild(farkleStreak);
         row.appendChild(total);
 
         scoreboard.appendChild(row);
