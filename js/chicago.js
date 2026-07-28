@@ -773,7 +773,7 @@ function renderScoreboard() {
                                     onclick="dropToTwenty(${index})"
                                     ${disabled ? "disabled" : ""}
                                 >
-                                    Ner till 20
+                                     → 20
                                 </button>
                             `
                             : ""
