@@ -320,3 +320,34 @@
 .player-total {
     flex-shrink: 0;
 }
+
+.player-score-row {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 10px;
+}
+
+.player-position {
+    grid-column: 1;
+}
+
+.player-name {
+    grid-column: 2;
+    min-width: 0;
+}
+
+.player-farkle-streak {
+    grid-column: 3;
+    min-width: 32px;
+    margin: 0;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.player-total {
+    grid-column: 4;
+    margin: 0;
+    text-align: right;
+    white-space: nowrap;
+}
