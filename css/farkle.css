@@ -306,3 +306,17 @@
         margin-bottom: 0.75rem;
     }
 }
+
+.player-farkle-streak {
+    min-width: 38px;
+    margin-left: auto;
+    margin-right: 8px;
+    font-size: 14px;
+    letter-spacing: -3px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.player-total {
+    flex-shrink: 0;
+}
