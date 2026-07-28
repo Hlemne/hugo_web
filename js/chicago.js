@@ -462,6 +462,74 @@ function cancelActiveChicago() {
 
 }
 
+function dropToTwenty(index) {
+
+    if (activeChicago !== null) {
+
+        alert(
+            "Avgör den aktiva Chicagon först."
+        );
+
+        return;
+
+    }
+
+    const player =
+        game[index];
+
+    if (player.score < CARD_STOP_SCORE) {
+
+        return;
+
+    }
+
+    const confirmed =
+        confirm(
+            player.name +
+            " går ner från " +
+            player.score +
+            " till 20 poäng. Fortsätta?"
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    saveUndo();
+
+    const oldScore =
+        player.score;
+
+    player.score = 20;
+
+    addHistory(
+        player.name +
+        " gick ner från " +
+        oldScore +
+        " till 20 poäng."
+    );
+
+    const currentWinner =
+        localStorage.getItem(
+            "chicagoWinner"
+        );
+
+    if (
+        currentWinner !== null &&
+        Number(currentWinner) === index
+    ) {
+
+        localStorage.removeItem(
+            "chicagoWinner"
+        );
+
+    }
+
+    saveGame();
+    render();
+
+}
+
 function checkWinner(index) {
 
     const player =
@@ -680,11 +748,38 @@ function renderScoreboard() {
                     Chicago: ${player.chicago}
                 </span>
 
-                <span class="info-badge ${
-                    cardStop
-                        ? "exchange-stopped"
-                        : "exchange-open"
-                }">
+                <div class="status-row">
+
+                    <span class="info-badge ${
+                        cardStop
+                            ? "exchange-stopped"
+                            : "exchange-open"
+                    }">
+                
+                        ${
+                            cardStop
+                                ? "Inga kortbyten"
+                                : "Kortbyte tillåtet"
+                        }
+                
+                    </span>
+                
+                    ${
+                        cardStop
+                            ? `
+                                <button
+                                    type="button"
+                                    class="drop-inline-button"
+                                    onclick="dropToTwenty(${index})"
+                                    ${disabled ? "disabled" : ""}
+                                >
+                                    Ner till 20
+                                </button>
+                            `
+                            : ""
+                    }
+                
+                </div>
 
                     ${
                         cardStop
