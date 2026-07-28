@@ -106,7 +106,7 @@ function clearScoreInput() {
         document.getElementById('scoreInput');
 
     scoreInput.value = '';
-    scoreInput.focus();
+    scoreInput.blur();
 }
 
 function addQuickScore(score) {
