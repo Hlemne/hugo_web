@@ -2,125 +2,443 @@
 <html lang="sv">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chicago</title>
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/chicago.css">
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Chicago – Ocean Games</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/chicago.css"
+    >
+
 </head>
 
-<body>
+<body class="chicago-start-page">
 
-<div class="container">
+    <main class="chicago-start-container">
 
-    <div class="game-card">
-
-        <h1>Chicago</h1>
-
-        <p class="subtitle">
-            Första spelaren till minst <strong>52 poäng</strong>
-            och minst <strong>1 Chicago</strong> vinner.
-        </p>
-
-        <label>Antal spelare</label>
-
-        <select id="playerCount" onchange="createPlayers()">
-
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4" selected>4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-
-        </select>
-
-        <div id="playerInputs"></div>
-
-        <button class="btn purple" onclick="startGame()">
-            Starta spel
-        </button>
-
-        <br><br>
-
-        <a href="index.html" class="btn red">
-            Tillbaka
+        <a
+            href="index.html"
+            class="chicago-back-link"
+        >
+            ← Tillbaka
         </a>
 
-    </div>
+        <section class="chicago-start-card">
 
-</div>
+            <header class="chicago-start-header">
 
-<script>
+                <div class="chicago-start-icon">
+                    🃏
+                </div>
 
-function createPlayers(){
+                <h1>Chicago</h1>
 
-    const amount =
-        Number(document.getElementById("playerCount").value);
+                <p>
+                    Första spelaren till minst
+                    <strong>52 poäng</strong>
+                    och minst
+                    <strong>1 Chicago</strong>
+                    vinner.
+                </p>
 
-    const container =
-        document.getElementById("playerInputs");
+            </header>
 
-    container.innerHTML="";
+            <div class="chicago-start-divider"></div>
 
-    for(let i=1;i<=amount;i++){
+            <section class="chicago-setting-section">
 
-        container.innerHTML += `
-        <input
-            id="player${i}"
-            placeholder="Spelare ${i}"
-            maxlength="20"
-        >
-        `;
+                <div class="chicago-section-title">
 
-    }
+                    <span class="chicago-section-number">
+                        1
+                    </span>
 
-}
+                    <div>
 
-createPlayers();
+                        <h2>Välj antal spelare</h2>
 
-function startGame(){
+                        <p>
+                            Välj hur många som ska vara med.
+                        </p>
 
-    const amount =
-        Number(document.getElementById("playerCount").value);
+                    </div>
 
-    const players=[];
+                </div>
 
-    for(let i=1;i<=amount;i++){
+                <div class="player-count-control">
 
-        const name=
+                    <button
+                        type="button"
+                        class="count-button"
+                        onclick="changePlayerCount(-1)"
+                        aria-label="Minska antal spelare"
+                    >
+                        −
+                    </button>
+
+                    <div class="player-count-display">
+
+                        <span id="playerCountNumber">
+                            4
+                        </span>
+
+                        <small>
+                            spelare
+                        </small>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="count-button"
+                        onclick="changePlayerCount(1)"
+                        aria-label="Öka antal spelare"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+                <select
+                    id="playerCount"
+                    class="hidden-player-select"
+                    aria-hidden="true"
+                    tabindex="-1"
+                >
+
+                    <option value="2">
+                        2
+                    </option>
+
+                    <option value="3">
+                        3
+                    </option>
+
+                    <option
+                        value="4"
+                        selected
+                    >
+                        4
+                    </option>
+
+                    <option value="5">
+                        5
+                    </option>
+
+                    <option value="6">
+                        6
+                    </option>
+
+                    <option value="7">
+                        7
+                    </option>
+
+                    <option value="8">
+                        8
+                    </option>
+
+                </select>
+
+            </section>
+
+            <div class="chicago-start-divider"></div>
+
+            <section class="chicago-setting-section">
+
+                <div class="chicago-section-title">
+
+                    <span class="chicago-section-number">
+                        2
+                    </span>
+
+                    <div>
+
+                        <h2>Skriv spelarnas namn</h2>
+
+                        <p>
+                            Namnen visas sedan på poängtavlan.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="playerInputs"
+                    class="player-name-grid"
+                ></div>
+
+            </section>
+
+            <button
+                type="button"
+                class="start-chicago-button"
+                onclick="startChicagoGame()"
+            >
+
+                <span>
+                    Starta spel
+                </span>
+
+                <span class="start-button-arrow">
+                    →
+                </span>
+
+            </button>
+
+        </section>
+
+        <section class="chicago-quick-rules">
+
+            <h2>Snabbregler</h2>
+
+            <div class="quick-rule">
+
+                <span class="quick-rule-icon">
+                    ✓
+                </span>
+
+                <p>
+                    Klarad Chicago ger
+                    <strong>+15 poäng</strong>
+                    och
+                    <strong>+1 Chicago</strong>.
+                </p>
+
+            </div>
+
+            <div class="quick-rule">
+
+                <span class="quick-rule-icon">
+                    ✕
+                </span>
+
+                <p>
+                    Misslyckad Chicago ger
+                    <strong>−15 poäng</strong>.
+                </p>
+
+            </div>
+
+            <div class="quick-rule">
+
+                <span class="quick-rule-icon">
+                    42
+                </span>
+
+                <p>
+                    Vid
+                    <strong>42 poäng</strong>
+                    får spelaren inte längre byta kort.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+
+        const playerCountSelect =
+            document.getElementById(
+                "playerCount"
+            );
+
+        const playerCountNumber =
+            document.getElementById(
+                "playerCountNumber"
+            );
+
+        const playerInputs =
+            document.getElementById(
+                "playerInputs"
+            );
+
+        function changePlayerCount(change) {
+
+            let currentCount =
+                Number(
+                    playerCountSelect.value
+                );
+
+            currentCount += change;
+
+            if (currentCount < 2) {
+                currentCount = 2;
+            }
+
+            if (currentCount > 8) {
+                currentCount = 8;
+            }
+
+            playerCountSelect.value =
+                currentCount;
+
+            updatePlayerInputs();
+
+        }
+
+        function updatePlayerInputs() {
+
+            const count =
+                Number(
+                    playerCountSelect.value
+                );
+
+            const existingNames = [];
+
             document
-            .getElementById("player"+i)
-            .value
-            .trim();
+                .querySelectorAll(
+                    ".player-name-input"
+                )
+                .forEach(function(input) {
 
-        players.push({
-            name:name || "Spelare "+i,
-            score:0,
-            chicago:0
-        });
+                    existingNames.push(
+                        input.value
+                    );
 
-    }
+                });
 
-    localStorage.setItem(
-        "chicagoGame",
-        JSON.stringify(players)
-    );
+            playerCountNumber.textContent =
+                count;
 
-    localStorage.setItem(
-        "chicagoRound",
-        "1"
-    );
+            playerInputs.innerHTML = "";
 
-    localStorage.removeItem("activeChicago");
+            for (
+                let index = 0;
+                index < count;
+                index++
+            ) {
 
-    window.location="chicago-score.html";
+                const wrapper =
+                    document.createElement(
+                        "label"
+                    );
 
-}
+                wrapper.className =
+                    "player-name-field";
 
-</script>
+                const number =
+                    document.createElement(
+                        "span"
+                    );
+
+                number.className =
+                    "player-field-number";
+
+                number.textContent =
+                    index + 1;
+
+                const input =
+                    document.createElement(
+                        "input"
+                    );
+
+                input.type = "text";
+
+                input.className =
+                    "player-name-input";
+
+                input.placeholder =
+                    "Spelare " +
+                    (index + 1);
+
+                input.autocomplete = "off";
+
+                input.maxLength = 20;
+
+                input.value =
+                    existingNames[index] ||
+                    "";
+
+                wrapper.appendChild(number);
+
+                wrapper.appendChild(input);
+
+                playerInputs.appendChild(
+                    wrapper
+                );
+
+            }
+
+        }
+
+        function startChicagoGame() {
+
+            const inputs =
+                document.querySelectorAll(
+                    ".player-name-input"
+                );
+
+            const players = [];
+
+            inputs.forEach(
+                function(input, index) {
+
+                    const enteredName =
+                        input.value.trim();
+
+                    players.push({
+
+                        name:
+                            enteredName ||
+                            "Spelare " +
+                            (index + 1),
+
+                        score: 0,
+
+                        chicago: 0
+
+                    });
+
+                }
+            );
+
+            localStorage.setItem(
+                "chicagoGame",
+                JSON.stringify(players)
+            );
+
+            localStorage.setItem(
+                "chicagoHistory",
+                JSON.stringify([])
+            );
+
+            localStorage.setItem(
+                "activeChicago",
+                JSON.stringify(null)
+            );
+
+            localStorage.removeItem(
+                "chicagoWinner"
+            );
+
+            localStorage.removeItem(
+                "chicagoRound"
+            );
+
+            location.href =
+                "chicago-score.html";
+
+        }
+
+        updatePlayerInputs();
+
+    </script>
 
 </body>
+
 </html>
