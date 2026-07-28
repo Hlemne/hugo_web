@@ -1,7 +1,7 @@
 const WINNING_SCORE = 52;
 const CARD_STOP_SCORE = 42;
 const CHICAGO_SUCCESS_POINTS = 15;
-const CHICAGO_FAIL_POINTS = -15;
+const BROKEN_CHICAGO_POINTS = -15;
 const BREAK_REWARD = 5;
 
 let game =
@@ -323,39 +323,7 @@ function completeChicago() {
 
 }
 
-function failChicago() {
 
-    if (activeChicago === null) {
-        return;
-    }
-
-    saveUndo();
-
-    const player =
-        game[activeChicago];
-
-    player.score +=
-        CHICAGO_FAIL_POINTS;
-
-    player.chicago =
-        Math.max(
-            0,
-            player.chicago - 1
-        );
-
-    addHistory(
-        player.name +
-        " misslyckades med Chicago och fick −15 poäng. Chicago: " +
-        player.chicago +
-        "."
-    );
-
-    activeChicago = null;
-
-    saveGame();
-    render();
-
-}
 
 function showBreakerSelection() {
 
@@ -432,7 +400,7 @@ function breakChicago() {
         game[breakerIndex];
 
     chicagoPlayer.score +=
-        CHICAGO_FAIL_POINTS;
+        BROKEN_CHICAGO_POINTS;
 
     chicagoPlayer.chicago =
         Math.max(
@@ -879,3 +847,48 @@ function escapeHtml(text) {
 }
 
 render();
+
+function toggleSection(contentId, button) {
+
+    const content =
+        document.getElementById(contentId);
+
+    const arrow =
+        button.querySelector(
+            ".collapse-arrow"
+        );
+
+    const isHidden =
+        content.classList.contains(
+            "hidden"
+        );
+
+    if (isHidden) {
+
+        content.classList.remove(
+            "hidden"
+        );
+
+        button.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+        arrow.textContent = "▲";
+
+    } else {
+
+        content.classList.add(
+            "hidden"
+        );
+
+        button.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+        arrow.textContent = "▼";
+
+    }
+
+}
