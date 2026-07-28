@@ -19,6 +19,8 @@ let activeChicago =
         localStorage.getItem("activeChicago")
     );
 
+let activeFourKind = null;
+
 let undoStack = [];
 
 function saveGame() {
@@ -145,6 +147,16 @@ function newGame() {
 
 function addScore(index) {
 
+    if (activeFourKind !== null) {
+
+        alert(
+            "Avgör det aktiva fyrtalet först."
+        );
+    
+        return;
+    
+    }
+
     if (activeChicago !== null) {
 
         alert(
@@ -196,6 +208,16 @@ function addScore(index) {
 }
 
 function openChicagoPlayerSelection() {
+
+    if (activeFourKind !== null) {
+
+        alert(
+            "Avgör det aktiva fyrtalet först."
+        );
+    
+        return;
+    
+    }
 
     if (activeChicago !== null) {
 
@@ -464,6 +486,16 @@ function cancelActiveChicago() {
 
 function dropToTwenty(index) {
 
+    if (activeFourKind !== null) {
+
+        alert(
+            "Avgör det aktiva fyrtalet först."
+        );
+    
+        return;
+    
+    }
+
     if (activeChicago !== null) {
 
         alert(
@@ -527,6 +559,236 @@ function dropToTwenty(index) {
 
     saveGame();
     render();
+
+}
+
+function openFourKindPlayerSelection() {
+
+    if (activeChicago !== null) {
+
+        alert(
+            "Avgör den aktiva Chicagon först."
+        );
+
+        return;
+
+    }
+
+    if (activeFourKind !== null) {
+
+        alert(
+            "Ett fyrtal är redan aktivt."
+        );
+
+        return;
+
+    }
+
+    closeChicagoPlayerSelection();
+
+    const panel =
+        document.getElementById(
+            "fourKindPlayerPanel"
+        );
+
+    const buttons =
+        document.getElementById(
+            "fourKindPlayerButtons"
+        );
+
+    buttons.innerHTML = "";
+
+    game.forEach(function(player, index) {
+
+        const button =
+            document.createElement("button");
+
+        button.type = "button";
+
+        button.className =
+            "chicago-player-choice four-kind-player-choice";
+
+        button.textContent =
+            player.name;
+
+        button.onclick =
+            function() {
+
+                selectFourKindPlayer(index);
+
+            };
+
+        buttons.appendChild(button);
+
+    });
+
+    panel.classList.remove("hidden");
+
+    panel.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+
+}
+
+function closeFourKindPlayerSelection() {
+
+    const panel =
+        document.getElementById(
+            "fourKindPlayerPanel"
+        );
+
+    if (panel) {
+
+        panel.classList.add("hidden");
+
+    }
+
+}
+
+function selectFourKindPlayer(index) {
+
+    activeFourKind = index;
+
+    closeFourKindPlayerSelection();
+
+    renderFourKindPanel();
+
+    document
+        .getElementById(
+            "fourKindResultPanel"
+        )
+        .scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+}
+
+function renderFourKindPanel() {
+
+    const resultPanel =
+        document.getElementById(
+            "fourKindResultPanel"
+        );
+
+    if (!resultPanel) {
+        return;
+    }
+
+    if (activeFourKind === null) {
+
+        resultPanel.classList.add(
+            "hidden"
+        );
+
+        return;
+
+    }
+
+    const player =
+        game[activeFourKind];
+
+    document
+        .getElementById(
+            "fourKindPlayerName"
+        )
+        .textContent =
+            player.name +
+            " fick fyrtal";
+
+    resultPanel.classList.remove(
+        "hidden"
+    );
+
+}
+
+function resetOthersAfterFourKind() {
+
+    if (activeFourKind === null) {
+        return;
+    }
+
+    const fourKindPlayer =
+        game[activeFourKind];
+
+    const confirmed =
+        confirm(
+            "Nollställ poäng och Chicago för alla utom " +
+            fourKindPlayer.name +
+            "?"
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    saveUndo();
+
+    game.forEach(function(player, index) {
+
+        if (index !== activeFourKind) {
+
+            player.score = 0;
+            player.chicago = 0;
+
+        }
+
+    });
+
+    localStorage.removeItem(
+        "chicagoWinner"
+    );
+
+    addHistory(
+        fourKindPlayer.name +
+        " fick fyrtal. Alla andra spelare nollställdes till 0 poäng och 0 Chicago."
+    );
+
+    activeFourKind = null;
+
+    saveGame();
+    render();
+
+}
+
+function giveFourKindPoints() {
+
+    if (activeFourKind === null) {
+        return;
+    }
+
+    saveUndo();
+
+    const playerIndex =
+        activeFourKind;
+
+    const player =
+        game[playerIndex];
+
+    player.score += 16;
+
+    addHistory(
+        player.name +
+        " fick fyrtal och +16 poäng."
+    );
+
+    activeFourKind = null;
+
+    checkWinner(playerIndex);
+
+    saveGame();
+    render();
+
+}
+
+function cancelFourKind() {
+
+    activeFourKind = null;
+
+    closeFourKindPlayerSelection();
+
+    renderFourKindPanel();
 
 }
 
@@ -604,8 +866,9 @@ function render() {
     renderWinner();
     renderScoreboard();
     renderChicagoPanel();
+    renderFourKindPanel();
     renderHistory();
-
+    
 }
 
 function renderWinner() {
