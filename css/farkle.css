@@ -395,3 +395,148 @@
         font-size: 1.1rem;
     }
 }
+
+/* =========================
+   REGLER
+========================= */
+
+.rules-card {
+    margin-bottom: 1rem;
+    color: #202020;
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 16px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+.rules-details summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+}
+
+.rules-details summary::-webkit-details-marker {
+    display: none;
+}
+
+.rules-arrow {
+    font-size: 1.5rem;
+    transition: transform 0.2s ease;
+}
+
+.rules-details[open] .rules-arrow {
+    transform: rotate(180deg);
+}
+
+.rules-content {
+    padding: 0 1rem 1rem;
+    border-top: 1px solid #dddddd;
+}
+
+.rules-content h3 {
+    margin: 1.25rem 0 0.6rem;
+    font-size: 1.05rem;
+}
+
+.rules-intro,
+.rules-text {
+    color: #444444;
+    font-size: 0.94rem;
+    line-height: 1.5;
+}
+
+.rules-intro {
+    padding-top: 1rem;
+}
+
+.rules-intro p,
+.rules-text p {
+    margin: 0 0 0.75rem;
+}
+
+.rule-list,
+.dice-score-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.rule-row,
+.dice-score-row {
+    display: grid;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 46px;
+    padding: 0.7rem 0.8rem;
+    background: #f1f3f5;
+    border-radius: 10px;
+}
+
+.rule-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.dice-score-row {
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+}
+
+.rule-row span,
+.dice-score-row span {
+    min-width: 0;
+}
+
+.rule-row strong,
+.dice-score-row strong {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.dice-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dice {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.rules-note {
+    padding: 0.75rem;
+    margin: 0.75rem 0 0;
+    color: #5b4700;
+    background: #fff3cd;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+@media screen and (max-width: 480px) {
+    .rules-details summary {
+        padding: 0.9rem;
+    }
+
+    .rules-content {
+        padding: 0 0.85rem 0.85rem;
+    }
+
+    .rule-row,
+    .dice-score-row {
+        font-size: 0.9rem;
+    }
+
+    .dice-score-row {
+        grid-template-columns: 36px minmax(0, 1fr) auto;
+    }
+
+    .dice {
+        font-size: 1.75rem;
+    }
+}
