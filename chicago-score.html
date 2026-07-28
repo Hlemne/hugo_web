@@ -150,15 +150,6 @@
 
             <button
                 type="button"
-                class="action-button fail-button"
-                onclick="failChicago()"
-            >
-                Misslyckades
-                <span>−15 poäng</span>
-            </button>
-
-            <button
-                type="button"
                 class="action-button break-button"
                 onclick="showBreakerSelection()"
             >
@@ -196,51 +187,98 @@
 
         </section>
 
-        <section class="history-box">
+        <section class="collapsible-box">
 
-            <div class="section-heading">
-
-                <div>
-
-                    <div class="panel-label">
-                        Senaste händelser
-                    </div>
-
-                    <h2>Historik</h2>
-
-                </div>
-
+            <button
+                type="button"
+                class="collapsible-header"
+                onclick="toggleSection('historyContent', this)"
+                aria-expanded="false"
+            >
+        
+                <span>Historik</span>
+        
+                <span class="collapse-arrow">
+                    ▼
+                </span>
+        
+            </button>
+        
+            <div
+                id="historyContent"
+                class="collapsible-content hidden"
+            >
+        
+                <div id="history"></div>
+        
             </div>
-
-            <div id="history"></div>
-
+        
         </section>
 
-        <section class="rules-box">
+        <section class="collapsible-box">
 
-            <h2>Regler i appen</h2>
-
-            <p>
-                Vanliga handpoäng skrivs direkt på varje spelare.
-            </p>
-
-            <p>
-                En klarad Chicago ger +15 poäng och +1 Chicago.
-                Handens vanliga poäng räknas då inte.
-            </p>
-
-            <p>
-                En misslyckad Chicago ger −15 poäng och −1 Chicago.
-            </p>
-
-            <p>
-                Vid bräckning får bräckaren +5 poäng.
-            </p>
-
-            <p>
-                För att vinna krävs minst 52 poäng och minst en Chicago.
-            </p>
-
+            <button
+                type="button"
+                class="collapsible-header"
+                onclick="toggleSection('rulesContent', this)"
+                aria-expanded="false"
+            >
+        
+                <span>Regler</span>
+        
+                <span class="collapse-arrow">
+                    ▼
+                </span>
+        
+            </button>
+        
+            <div
+                id="rulesContent"
+                class="collapsible-content hidden"
+            >
+        
+                <div class="rules-content">
+        
+                    <p>
+                        Vanliga handpoäng skrivs direkt på varje spelare.
+                    </p>
+        
+                    <p>
+                        En klarad Chicago ger
+                        <strong>+15 poäng</strong>
+                        och
+                        <strong>+1 Chicago</strong>.
+                        Handens vanliga poäng räknas inte.
+                    </p>
+        
+                    <p>
+                        Om spelaren blir bräckt får spelaren
+                        <strong>−15 poäng</strong>
+                        och förlorar
+                        <strong>1 Chicago</strong>.
+                    </p>
+        
+                    <p>
+                        Chicago-antalet kan aldrig bli lägre än 0.
+                    </p>
+        
+                    <p>
+                        Spelaren som bräcker får
+                        <strong>+5 poäng</strong>.
+                    </p>
+        
+                    <p>
+                        Vid 42 poäng får spelaren inte längre byta kort.
+                    </p>
+        
+                    <p>
+                        För att vinna krävs minst 52 poäng och minst 1 Chicago.
+                    </p>
+        
+                </div>
+        
+            </div>
+        
         </section>
 
     </main>
