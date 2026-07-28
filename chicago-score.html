@@ -106,6 +106,71 @@
             SÄG CHICAGO
         </button>
 
+        <button
+            type="button"
+            class="main-four-kind-button"
+            onclick="openFourKindPlayerSelection()"
+        >
+            FYRTAL
+        </button>
+        
+        <section
+            id="fourKindPlayerPanel"
+            class="chicago-panel four-kind-panel hidden"
+        >
+            <h2>Vem fick fyrtal?</h2>
+        
+            <div
+                id="fourKindPlayerButtons"
+                class="chicago-player-buttons"
+            ></div>
+        
+            <button
+                type="button"
+                class="cancel-button"
+                onclick="closeFourKindPlayerSelection()"
+            >
+                Avbryt
+            </button>
+        </section>
+        
+        <section
+            id="fourKindResultPanel"
+            class="chicago-panel four-kind-panel hidden"
+        >
+            <div class="panel-label">
+                Fyrtal
+            </div>
+        
+            <h2 id="fourKindPlayerName"></h2>
+        
+            <button
+                type="button"
+                class="action-button reset-everyone-button"
+                onclick="resetOthersAfterFourKind()"
+            >
+                <span>Nollställ alla andra</span>
+                <span>0 poäng och 0 Chicago</span>
+            </button>
+        
+            <button
+                type="button"
+                class="action-button four-kind-points-button"
+                onclick="giveFourKindPoints()"
+            >
+                <span>16 poäng</span>
+                <span>+16 till spelaren</span>
+            </button>
+        
+            <button
+                type="button"
+                class="cancel-button"
+                onclick="cancelFourKind()"
+            >
+                Avbryt fyrtal
+            </button>
+        </section>
+
         <section
             id="chicagoPlayerPanel"
             class="chicago-panel hidden"
