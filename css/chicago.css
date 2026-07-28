@@ -472,3 +472,362 @@
         font-size: 32px;
     }
 }
+
+/* STARTSIDA FÖR CHICAGO */
+
+.chicago-start-page {
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px 14px 40px;
+    color: white;
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, 0.34),
+            rgba(0, 0, 0, 0.7)
+        ),
+        url("../img/background.jpg");
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    box-sizing: border-box;
+}
+
+.chicago-start-container {
+    width: 100%;
+    max-width: 620px;
+    margin: 0 auto;
+}
+
+.chicago-back-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-bottom: 12px;
+    padding: 0 4px;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.chicago-start-card {
+    padding: 20px;
+    color: #202124;
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 22px;
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.3);
+}
+
+.chicago-start-header {
+    text-align: center;
+}
+
+.chicago-start-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 10px;
+    background: #f2e8f7;
+    border-radius: 18px;
+    font-size: 30px;
+}
+
+.chicago-start-header h1 {
+    margin: 0 0 8px;
+    font-size: 38px;
+    line-height: 1.1;
+}
+
+.chicago-start-header p {
+    max-width: 420px;
+    margin: 0 auto;
+    color: #5f6368;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.chicago-start-divider {
+    height: 1px;
+    margin: 20px 0;
+    background: #e5e7eb;
+}
+
+.chicago-setting-section {
+    width: 100%;
+}
+
+.chicago-section-title {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    margin-bottom: 15px;
+}
+
+.chicago-section-number {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 31px;
+    height: 31px;
+    color: white;
+    background: #8e44ad;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.chicago-section-title h2 {
+    margin: 1px 0 3px;
+    font-size: 18px;
+}
+
+.chicago-section-title p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.player-count-control {
+    display: grid;
+    grid-template-columns: 52px 1fr 52px;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.count-button {
+    min-height: 58px;
+    padding: 0;
+    color: white;
+    background: #8e44ad;
+    border: none;
+    border-radius: 14px;
+    font-size: 29px;
+    font-weight: bold;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.count-button:active {
+    transform: scale(0.96);
+}
+
+.player-count-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 58px;
+    padding: 8px 12px;
+    background: #f3f4f6;
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+}
+
+.player-count-display span {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.player-count-display small {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.hidden-player-select {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.player-name-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.player-name-field {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    min-height: 54px;
+    background: #f8f9fa;
+    border: 2px solid #e5e7eb;
+    border-radius: 13px;
+    overflow: hidden;
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.player-name-field:focus-within {
+    border-color: #8e44ad;
+    box-shadow:
+        0 0 0 3px
+        rgba(142, 68, 173, 0.14);
+}
+
+.player-field-number {
+    display: flex;
+    flex: 0 0 38px;
+    align-self: stretch;
+    align-items: center;
+    justify-content: center;
+    color: #8e44ad;
+    background: #f2e8f7;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.player-name-input {
+    width: 100%;
+    min-width: 0;
+    min-height: 50px;
+    padding: 0 11px;
+    color: #202124;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.player-name-input::placeholder {
+    color: #9aa0a6;
+}
+
+.start-chicago-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 60px;
+    margin-top: 20px;
+    padding: 0 18px;
+    color: white;
+    background: #8e44ad;
+    border: none;
+    border-radius: 15px;
+    box-shadow:
+        0 8px 20px
+        rgba(142, 68, 173, 0.28);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.start-chicago-button:active {
+    transform: scale(0.985);
+}
+
+.start-button-arrow {
+    font-size: 25px;
+}
+
+.chicago-quick-rules {
+    margin-top: 14px;
+    padding: 17px;
+    color: white;
+    background: rgba(0, 0, 0, 0.56);
+    border: 1px solid
+        rgba(255, 255, 255, 0.16);
+    border-radius: 18px;
+    backdrop-filter: blur(10px);
+}
+
+.chicago-quick-rules h2 {
+    margin: 0 0 12px;
+    font-size: 18px;
+}
+
+.quick-rule {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid
+        rgba(255, 255, 255, 0.14);
+}
+
+.quick-rule:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.quick-rule-icon {
+    display: flex;
+    flex: 0 0 31px;
+    align-items: center;
+    justify-content: center;
+    width: 31px;
+    height: 31px;
+    color: white;
+    background: rgba(142, 68, 173, 0.95);
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.quick-rule p {
+    margin: 3px 0 0;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+/* MOBILJUSTERINGAR */
+
+@media screen and (max-width: 480px) {
+
+    .chicago-start-page {
+        padding: 14px 10px 30px;
+    }
+
+    .chicago-start-card {
+        padding: 17px;
+        border-radius: 19px;
+    }
+
+    .chicago-start-header h1 {
+        font-size: 34px;
+    }
+
+    .player-name-grid {
+        grid-template-columns: 1fr;
+        gap: 9px;
+    }
+
+    .player-name-field {
+        min-height: 56px;
+    }
+
+    .player-name-input {
+        font-size: 16px;
+    }
+
+}
+
+@media screen and (max-width: 350px) {
+
+    .chicago-start-card {
+        padding: 14px;
+    }
+
+    .player-count-control {
+        grid-template-columns: 48px 1fr 48px;
+        gap: 7px;
+    }
+
+    .count-button,
+    .player-count-display {
+        min-height: 54px;
+    }
+
+}
