@@ -4,6 +4,10 @@
     max-width: 560px;
 }
 
+/* =========================
+   STARTSIDA
+========================= */
+
 .farkle-start-card {
     display: flex;
     flex-direction: column;
@@ -60,6 +64,10 @@
     text-decoration: none;
 }
 
+/* =========================
+   SPELSIDA
+========================= */
+
 .farkle-game-container {
     justify-content: flex-start;
     padding: 0;
@@ -71,6 +79,10 @@
     color: white;
     background: rgba(0, 0, 0, 0.68);
 }
+
+/* =========================
+   HEADER
+========================= */
 
 .game-header {
     display: grid;
@@ -94,10 +106,15 @@
 .reset-link {
     justify-self: end;
     padding: 0;
+    color: white;
     border: none;
     background: transparent;
     cursor: pointer;
 }
+
+/* =========================
+   KORT
+========================= */
 
 .current-player-card,
 .score-entry-card,
@@ -110,6 +127,10 @@
     border-radius: 16px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
 }
+
+/* =========================
+   AKTUELL SPELARE
+========================= */
 
 .current-player-card {
     text-align: center;
@@ -141,6 +162,10 @@
 .turn-score strong {
     font-size: 2rem;
 }
+
+/* =========================
+   POÄNGINMATNING
+========================= */
 
 .score-entry-card {
     display: flex;
@@ -186,6 +211,11 @@
     cursor: pointer;
 }
 
+.action-button:active,
+.quick-score-buttons button:active {
+    transform: scale(0.98);
+}
+
 .continue-button {
     background: #3498db;
 }
@@ -198,6 +228,10 @@
     background: #e74c3c;
 }
 
+/* =========================
+   RUBRIKER
+========================= */
+
 .scoreboard-heading,
 .history-heading {
     display: flex;
@@ -208,6 +242,7 @@
 
 .scoreboard-heading h2,
 .history-heading h2 {
+    margin: 0;
     font-size: 1.25rem;
 }
 
@@ -215,6 +250,10 @@
     color: #666;
     font-weight: bold;
 }
+
+/* =========================
+   POÄNGTAVLA
+========================= */
 
 .scoreboard {
     display: flex;
@@ -224,9 +263,11 @@
 
 .player-score-row {
     display: grid;
-    grid-template-columns: 36px 1fr auto;
+    grid-template-columns: 38px minmax(0, 1fr) 50px auto;
+    grid-template-rows: 1fr;
     align-items: center;
-    gap: 0.7rem;
+    column-gap: 8px;
+    width: 100%;
     padding: 0.8rem;
     background: #f1f3f5;
     border-radius: 10px;
@@ -238,6 +279,8 @@
 }
 
 .player-position {
+    grid-column: 1;
+    grid-row: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -249,16 +292,40 @@
 }
 
 .player-name {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
     overflow: hidden;
     font-weight: bold;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
+.player-farkle-streak {
+    grid-column: 3;
+    grid-row: 1;
+    min-width: 0;
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: -5px;
+    text-align: center;
+    white-space: nowrap;
+}
+
 .player-total {
+    grid-column: 4;
+    grid-row: 1;
+    width: auto;
+    margin: 0;
     font-size: 1.25rem;
     font-weight: bold;
+    text-align: right;
+    white-space: nowrap;
 }
+
+/* =========================
+   HISTORIK
+========================= */
 
 .history-heading button {
     padding: 0.5rem 0.8rem;
@@ -285,6 +352,10 @@
     border-bottom: none;
 }
 
+/* =========================
+   MOBIL
+========================= */
+
 @media screen and (max-width: 480px) {
     .farkle-game {
         padding: 0.75rem;
@@ -305,49 +376,22 @@
         padding: 0.85rem;
         margin-bottom: 0.75rem;
     }
-}
 
-.player-farkle-streak {
-    min-width: 38px;
-    margin-left: auto;
-    margin-right: 8px;
-    font-size: 14px;
-    letter-spacing: -3px;
-    text-align: right;
-    white-space: nowrap;
-}
+    .player-score-row {
+        grid-template-columns: 38px minmax(0, 1fr) 46px auto;
+        column-gap: 6px;
+        padding: 0.75rem;
+    }
 
-.player-total {
-    flex-shrink: 0;
-}
+    .player-name {
+        font-size: 0.95rem;
+    }
 
-.player-score-row {
-    display: grid;
-    grid-template-columns: 46px minmax(0, 1fr) auto auto;
-    align-items: center;
-    gap: 10px;
-}
+    .player-farkle-streak {
+        font-size: 17px;
+    }
 
-.player-position {
-    grid-column: 1;
-}
-
-.player-name {
-    grid-column: 2;
-    min-width: 0;
-}
-
-.player-farkle-streak {
-    grid-column: 3;
-    min-width: 32px;
-    margin: 0;
-    text-align: right;
-    white-space: nowrap;
-}
-
-.player-total {
-    grid-column: 4;
-    margin: 0;
-    text-align: right;
-    white-space: nowrap;
+    .player-total {
+        font-size: 1.1rem;
+    }
 }
