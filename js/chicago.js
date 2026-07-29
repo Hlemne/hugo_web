@@ -1,8 +1,10 @@
 const WINNING_SCORE = 52;
 const CARD_STOP_SCORE = 42;
+
 const CHICAGO_SUCCESS_POINTS = 15;
 const BROKEN_CHICAGO_POINTS = -15;
 const BREAK_REWARD = 5;
+const FOUR_KIND_POINTS = 16;
 
 let game =
     JSON.parse(
@@ -21,7 +23,57 @@ let activeChicago =
 
 let activeFourKind = null;
 
+let selectedPlayerIndex = null;
+
 let undoStack = [];
+
+
+/* =========================
+   START OCH KOMPATIBILITET
+========================= */
+
+function prepareGameData() {
+
+    game.forEach(function(player) {
+
+        if (
+            typeof player.score !== "number" ||
+            !Number.isFinite(player.score)
+        ) {
+            player.score = 0;
+        }
+
+        if (
+            typeof player.chicago !== "number" ||
+            !Number.isFinite(player.chicago)
+        ) {
+            player.chicago = 0;
+        }
+
+        player.chicago =
+            Math.max(
+                0,
+                Math.floor(player.chicago)
+            );
+
+    });
+
+    if (
+        activeChicago !== null &&
+        (
+            !Number.isInteger(activeChicago) ||
+            !game[activeChicago]
+        )
+    ) {
+        activeChicago = null;
+    }
+
+}
+
+
+/* =========================
+   SPARA OCH ÅNGRA
+========================= */
 
 function saveGame() {
 
@@ -53,6 +105,9 @@ function saveUndo() {
                 JSON.stringify(history)
             ),
             activeChicago: activeChicago,
+            activeFourKind: activeFourKind,
+            selectedPlayerIndex:
+                selectedPlayerIndex,
             winner: localStorage.getItem(
                 "chicagoWinner"
             )
@@ -82,7 +137,15 @@ function undoAction() {
 
     game = state.game;
     history = state.history;
-    activeChicago = state.activeChicago;
+
+    activeChicago =
+        state.activeChicago;
+
+    activeFourKind =
+        state.activeFourKind ?? null;
+
+    selectedPlayerIndex =
+        state.selectedPlayerIndex ?? null;
 
     if (state.winner === null) {
 
@@ -104,11 +167,21 @@ function undoAction() {
 
 }
 
+
+/* =========================
+   HISTORIK
+========================= */
+
 function addHistory(text) {
 
     history.unshift(text);
 
 }
+
+
+/* =========================
+   NYTT SPEL
+========================= */
 
 function newGame() {
 
@@ -145,16 +218,34 @@ function newGame() {
 
 }
 
-function addScore(index) {
+
+/* =========================
+   GEMENSAM POÄNGINMATNING
+========================= */
+
+function selectPlayer(index) {
+
+    if (!game[index]) {
+        return;
+    }
+
+    selectedPlayerIndex = index;
+
+    renderScoreboard();
+    renderSelectedPlayer();
+
+}
+
+function addScoreToSelectedPlayer() {
 
     if (activeFourKind !== null) {
 
         alert(
             "Avgör det aktiva fyrtalet först."
         );
-    
+
         return;
-    
+
     }
 
     if (activeChicago !== null) {
@@ -167,13 +258,30 @@ function addScore(index) {
 
     }
 
-    const input =
-        document.getElementById(
-            "score" + index
+    if (
+        selectedPlayerIndex === null ||
+        !game[selectedPlayerIndex]
+    ) {
+
+        alert(
+            "Välj först en spelare i poängtavlan."
         );
 
-    if (!input || input.value === "") {
         return;
+
+    }
+
+    const input =
+        document.getElementById(
+            "sharedScoreInput"
+        );
+
+    if (!input || input.value.trim() === "") {
+
+        alert("Skriv in poängen.");
+
+        return;
+
     }
 
     const value =
@@ -181,7 +289,9 @@ function addScore(index) {
 
     if (!Number.isFinite(value)) {
 
-        alert("Ange ett giltigt poängtal.");
+        alert(
+            "Ange ett giltigt poängtal."
+        );
 
         return;
 
@@ -189,23 +299,40 @@ function addScore(index) {
 
     saveUndo();
 
-    game[index].score += value;
+    const player =
+        game[selectedPlayerIndex];
+
+    const oldScore =
+        player.score;
+
+    player.score += value;
 
     addHistory(
-        game[index].name +
+        player.name +
         " fick " +
         formatPoints(value) +
-        "."
+        ". Total: " +
+        player.score +
+        " poäng."
     );
 
     input.value = "";
+    input.blur();
 
-    checkWinner(index);
+    updateWinnerAfterScoreChange(
+        selectedPlayerIndex,
+        oldScore
+    );
 
     saveGame();
     render();
 
 }
+
+
+/* =========================
+   CHICAGO
+========================= */
 
 function openChicagoPlayerSelection() {
 
@@ -214,9 +341,9 @@ function openChicagoPlayerSelection() {
         alert(
             "Avgör det aktiva fyrtalet först."
         );
-    
+
         return;
-    
+
     }
 
     if (activeChicago !== null) {
@@ -228,6 +355,8 @@ function openChicagoPlayerSelection() {
         return;
 
     }
+
+    closeFourKindPlayerSelection();
 
     const panel =
         document.getElementById(
@@ -256,7 +385,9 @@ function openChicagoPlayerSelection() {
 
         button.onclick =
             function() {
+
                 selectChicagoPlayer(index);
+
             };
 
         buttons.appendChild(button);
@@ -274,16 +405,22 @@ function openChicagoPlayerSelection() {
 
 function closeChicagoPlayerSelection() {
 
-    document
-        .getElementById(
+    const panel =
+        document.getElementById(
             "chicagoPlayerPanel"
-        )
-        .classList
-        .add("hidden");
+        );
+
+    if (panel) {
+        panel.classList.add("hidden");
+    }
 
 }
 
 function selectChicagoPlayer(index) {
+
+    if (!game[index]) {
+        return;
+    }
 
     saveUndo();
 
@@ -299,20 +436,28 @@ function selectChicagoPlayer(index) {
     saveGame();
     render();
 
-    document
-        .getElementById(
+    const resultPanel =
+        document.getElementById(
             "chicagoResultPanel"
-        )
-        .scrollIntoView({
+        );
+
+    if (resultPanel) {
+
+        resultPanel.scrollIntoView({
             behavior: "smooth",
             block: "center"
         });
+
+    }
 
 }
 
 function completeChicago() {
 
-    if (activeChicago === null) {
+    if (
+        activeChicago === null ||
+        !game[activeChicago]
+    ) {
         return;
     }
 
@@ -327,11 +472,14 @@ function completeChicago() {
     player.score +=
         CHICAGO_SUCCESS_POINTS;
 
-    player.chicago++;
+    player.chicago += 1;
 
     addHistory(
         player.name +
-        " klarade Chicago, fick +15 poäng och har nu " +
+        " klarade Chicago och fick +15 poäng och +1 Chicago. " +
+        "Total: " +
+        player.score +
+        " poäng och " +
         player.chicago +
         " Chicago."
     );
@@ -344,8 +492,6 @@ function completeChicago() {
     render();
 
 }
-
-
 
 function showBreakerSelection() {
 
@@ -387,7 +533,10 @@ function showBreakerSelection() {
 
 function breakChicago() {
 
-    if (activeChicago === null) {
+    if (
+        activeChicago === null ||
+        !game[activeChicago]
+    ) {
         return;
     }
 
@@ -415,8 +564,11 @@ function breakChicago() {
 
     saveUndo();
 
+    const chicagoPlayerIndex =
+        activeChicago;
+
     const chicagoPlayer =
-        game[activeChicago];
+        game[chicagoPlayerIndex];
 
     const breaker =
         game[breakerIndex];
@@ -441,12 +593,16 @@ function breakChicago() {
         breaker.name +
         " fick +5 poäng och " +
         chicagoPlayer.name +
-        " fick −15 poäng. Chicago: " +
+        " fick −15 poäng och har nu " +
         chicagoPlayer.chicago +
-        "."
+        " Chicago."
     );
 
     activeChicago = null;
+
+    removeWinnerIfInvalid(
+        chicagoPlayerIndex
+    );
 
     checkWinner(breakerIndex);
 
@@ -457,7 +613,10 @@ function breakChicago() {
 
 function cancelActiveChicago() {
 
-    if (activeChicago === null) {
+    if (
+        activeChicago === null ||
+        !game[activeChicago]
+    ) {
         return;
     }
 
@@ -484,6 +643,11 @@ function cancelActiveChicago() {
 
 }
 
+
+/* =========================
+   NER TILL 20
+========================= */
+
 function dropToTwenty(index) {
 
     if (activeFourKind !== null) {
@@ -491,9 +655,9 @@ function dropToTwenty(index) {
         alert(
             "Avgör det aktiva fyrtalet först."
         );
-    
+
         return;
-    
+
     }
 
     if (activeChicago !== null) {
@@ -509,10 +673,11 @@ function dropToTwenty(index) {
     const player =
         game[index];
 
-    if (player.score < CARD_STOP_SCORE) {
-
+    if (
+        !player ||
+        player.score < CARD_STOP_SCORE
+    ) {
         return;
-
     }
 
     const confirmed =
@@ -541,26 +706,17 @@ function dropToTwenty(index) {
         " till 20 poäng."
     );
 
-    const currentWinner =
-        localStorage.getItem(
-            "chicagoWinner"
-        );
-
-    if (
-        currentWinner !== null &&
-        Number(currentWinner) === index
-    ) {
-
-        localStorage.removeItem(
-            "chicagoWinner"
-        );
-
-    }
+    removeWinnerIfInvalid(index);
 
     saveGame();
     render();
 
 }
+
+
+/* =========================
+   FYRTAL
+========================= */
 
 function openFourKindPlayerSelection() {
 
@@ -639,29 +795,35 @@ function closeFourKindPlayerSelection() {
         );
 
     if (panel) {
-
         panel.classList.add("hidden");
-
     }
 
 }
 
 function selectFourKindPlayer(index) {
 
+    if (!game[index]) {
+        return;
+    }
+
     activeFourKind = index;
 
     closeFourKindPlayerSelection();
-
     renderFourKindPanel();
 
-    document
-        .getElementById(
+    const resultPanel =
+        document.getElementById(
             "fourKindResultPanel"
-        )
-        .scrollIntoView({
+        );
+
+    if (resultPanel) {
+
+        resultPanel.scrollIntoView({
             behavior: "smooth",
             block: "center"
         });
+
+    }
 
 }
 
@@ -676,7 +838,10 @@ function renderFourKindPanel() {
         return;
     }
 
-    if (activeFourKind === null) {
+    if (
+        activeFourKind === null ||
+        !game[activeFourKind]
+    ) {
 
         resultPanel.classList.add(
             "hidden"
@@ -705,12 +870,18 @@ function renderFourKindPanel() {
 
 function resetOthersAfterFourKind() {
 
-    if (activeFourKind === null) {
+    if (
+        activeFourKind === null ||
+        !game[activeFourKind]
+    ) {
         return;
     }
 
+    const selectedIndex =
+        activeFourKind;
+
     const fourKindPlayer =
-        game[activeFourKind];
+        game[selectedIndex];
 
     const confirmed =
         confirm(
@@ -727,7 +898,7 @@ function resetOthersAfterFourKind() {
 
     game.forEach(function(player, index) {
 
-        if (index !== activeFourKind) {
+        if (index !== selectedIndex) {
 
             player.score = 0;
             player.chicago = 0;
@@ -747,6 +918,8 @@ function resetOthersAfterFourKind() {
 
     activeFourKind = null;
 
+    checkWinner(selectedIndex);
+
     saveGame();
     render();
 
@@ -754,7 +927,10 @@ function resetOthersAfterFourKind() {
 
 function giveFourKindPoints() {
 
-    if (activeFourKind === null) {
+    if (
+        activeFourKind === null ||
+        !game[activeFourKind]
+    ) {
         return;
     }
 
@@ -766,11 +942,14 @@ function giveFourKindPoints() {
     const player =
         game[playerIndex];
 
-    player.score += 16;
+    player.score +=
+        FOUR_KIND_POINTS;
 
     addHistory(
         player.name +
-        " fick fyrtal och +16 poäng."
+        " fick fyrtal och +16 poäng. Total: " +
+        player.score +
+        " poäng."
     );
 
     activeFourKind = null;
@@ -787,70 +966,105 @@ function cancelFourKind() {
     activeFourKind = null;
 
     closeFourKindPlayerSelection();
-
     renderFourKindPanel();
 
 }
+
+
+/* =========================
+   VINNARE
+========================= */
 
 function checkWinner(index) {
 
     const player =
         game[index];
 
+    if (!player) {
+        return;
+    }
+
     if (
         player.score >= WINNING_SCORE &&
         player.chicago >= 1
     ) {
+
+        const existingWinner =
+            localStorage.getItem(
+                "chicagoWinner"
+            );
 
         localStorage.setItem(
             "chicagoWinner",
             index
         );
 
-        addHistory(
-            player.name +
-            " vann med " +
-            player.score +
-            " poäng och " +
-            player.chicago +
-            " Chicago!"
-        );
-
-    } else {
-
-        const currentWinner =
-            localStorage.getItem(
-                "chicagoWinner"
-            );
-
         if (
-            currentWinner !== null &&
-            Number(currentWinner) === index
+            existingWinner === null ||
+            Number(existingWinner) !== index
         ) {
 
-            localStorage.removeItem(
-                "chicagoWinner"
+            addHistory(
+                player.name +
+                " vann med " +
+                player.score +
+                " poäng och " +
+                player.chicago +
+                " Chicago!"
             );
 
         }
 
+    } else {
+
+        removeWinnerIfInvalid(index);
+
     }
 
 }
 
-function getLeaderScore() {
+function removeWinnerIfInvalid(index) {
 
-    if (game.length === 0) {
-        return 0;
+    const currentWinner =
+        localStorage.getItem(
+            "chicagoWinner"
+        );
+
+    if (
+        currentWinner === null ||
+        Number(currentWinner) !== index
+    ) {
+        return;
     }
 
-    return Math.max(
-        ...game.map(function(player) {
-            return player.score;
-        })
-    );
+    const player =
+        game[index];
+
+    if (
+        !player ||
+        player.score < WINNING_SCORE ||
+        player.chicago < 1
+    ) {
+
+        localStorage.removeItem(
+            "chicagoWinner"
+        );
+
+    }
 
 }
+
+function updateWinnerAfterScoreChange(index) {
+
+    removeWinnerIfInvalid(index);
+    checkWinner(index);
+
+}
+
+
+/* =========================
+   RENDERING
+========================= */
 
 function render() {
 
@@ -863,12 +1077,20 @@ function render() {
 
     }
 
+    if (
+        selectedPlayerIndex !== null &&
+        !game[selectedPlayerIndex]
+    ) {
+        selectedPlayerIndex = null;
+    }
+
     renderWinner();
     renderScoreboard();
+    renderSelectedPlayer();
     renderChicagoPanel();
     renderFourKindPanel();
     renderHistory();
-    
+
 }
 
 function renderWinner() {
@@ -885,9 +1107,9 @@ function renderWinner() {
 
     if (winnerIndex === null) {
 
-        winnerBox
-            .classList
-            .add("hidden");
+        winnerBox.classList.add(
+            "hidden"
+        );
 
         return;
 
@@ -906,9 +1128,9 @@ function renderWinner() {
             "chicagoWinner"
         );
 
-        winnerBox
-            .classList
-            .add("hidden");
+        winnerBox.classList.add(
+            "hidden"
+        );
 
         return;
 
@@ -926,9 +1148,9 @@ function renderWinner() {
             winner.chicago +
             " Chicago";
 
-    winnerBox
-        .classList
-        .remove("hidden");
+    winnerBox.classList.remove(
+        "hidden"
+    );
 
 }
 
@@ -951,18 +1173,32 @@ function renderScoreboard() {
 
     game.forEach(function(player, index) {
 
-        const card =
+        const row =
             document.createElement("div");
 
-        card.className =
-            "player-card";
+        row.className =
+            "player-list-row";
 
-        if (player.score === leaderScore) {
-            card.classList.add("leader");
+        if (
+            selectedPlayerIndex === index
+        ) {
+            row.classList.add(
+                "selected"
+            );
         }
 
-        if (activeChicago === index) {
-            card.classList.add(
+        if (
+            player.score === leaderScore
+        ) {
+            row.classList.add(
+                "leader"
+            );
+        }
+
+        if (
+            activeChicago === index
+        ) {
+            row.classList.add(
                 "active-chicago"
             );
         }
@@ -971,126 +1207,129 @@ function renderScoreboard() {
             winnerIndex !== null &&
             Number(winnerIndex) === index
         ) {
-            card.classList.add("winner");
+            row.classList.add(
+                "winner"
+            );
         }
 
-        const cardStop =
+        row.onclick =
+            function() {
+
+                selectPlayer(index);
+
+            };
+
+        const chicagoStars =
+            player.chicago > 0
+                ? "🌟".repeat(
+                    player.chicago
+                )
+                : "–";
+
+        const showDropButton =
             player.score >=
             CARD_STOP_SCORE;
 
-        const disabled =
-            activeChicago !== null;
+        const actionsDisabled =
+            activeChicago !== null ||
+            activeFourKind !== null;
 
-        card.innerHTML = `
+        row.innerHTML = `
 
-            <div class="player-card-header">
+            <div class="list-player-name">
 
-                <div class="player-name-area">
+                ${
+                    player.score === leaderScore
+                        ? '<span class="leader-icon">🏆</span>'
+                        : ""
+                }
 
-                    ${
-                        player.score === leaderScore
-                            ? '<span class="leader-icon">🏆</span>'
-                            : ""
-                    }
-
-                    <span class="player-name">
-                        ${escapeHtml(player.name)}
-                    </span>
-
-                </div>
-
-                <div class="player-score">
-                    ${player.score}
-                </div>
+                <span>
+                    ${escapeHtml(player.name)}
+                </span>
 
             </div>
 
-            <div class="player-info">
+            <div
+                class="list-chicago-stars"
+                aria-label="${player.chicago} Chicago"
+            >
+                ${chicagoStars}
+            </div>
 
-                <span class="info-badge chicago-badge">
-                    Chicago: ${player.chicago}
-                </span>
+            <div class="list-player-score">
+                ${player.score}
+            </div>
 
-                <div class="status-row">
-
-                    <span class="info-badge ${
-                        cardStop
-                            ? "exchange-stopped"
-                            : "exchange-open"
-                    }">
-                
-                        ${
-                            cardStop
-                                ? "Inga kortbyten"
-                                : "Kortbyte tillåtet"
-                        }
-                
-                    </span>
-                
-                    ${
-                        cardStop
-                            ? `
-                                <button
-                                    type="button"
-                                    class="drop-inline-button"
-                                    onclick="dropToTwenty(${index})"
-                                    ${disabled ? "disabled" : ""}
-                                >
-                                    → 20
-                                </button>
-                            `
-                            : ""
-                    }
-                
-                </div>
-
-                    ${
-                        cardStop
-                            ? "Inga kortbyten"
-                            : "Kortbyte tillåtet"
-                    }
-
-                </span>
+            <div class="list-player-action">
 
                 ${
-                    activeChicago === index
+                    showDropButton
                         ? `
-                            <span class="info-badge active-badge">
-                                Chicago pågår
-                            </span>
+                            <button
+                                type="button"
+                                class="drop-inline-button"
+                                onclick="event.stopPropagation(); dropToTwenty(${index})"
+                                ${actionsDisabled ? "disabled" : ""}
+                                aria-label="Sätt ${escapeHtml(player.name)} till 20 poäng"
+                            >
+                                → 20
+                            </button>
                         `
                         : ""
                 }
 
             </div>
 
-            <div class="score-controls">
-
-                <input
-                    id="score${index}"
-                    class="score-input"
-                    type="number"
-                    inputmode="numeric"
-                    placeholder="Poäng"
-                    ${disabled ? "disabled" : ""}
-                >
-
-                <button
-                    type="button"
-                    class="add-score-button"
-                    onclick="addScore(${index})"
-                    ${disabled ? "disabled" : ""}
-                >
-                    Lägg till
-                </button>
-
-            </div>
-
         `;
 
-        scoreboard.appendChild(card);
+        scoreboard.appendChild(row);
 
     });
+
+}
+
+function renderSelectedPlayer() {
+
+    const nameElement =
+        document.getElementById(
+            "selectedPlayerName"
+        );
+
+    const input =
+        document.getElementById(
+            "sharedScoreInput"
+        );
+
+    const addButton =
+        document.querySelector(
+            ".shared-add-button"
+        );
+
+    const locked =
+        activeChicago !== null ||
+        activeFourKind !== null;
+
+    if (
+        selectedPlayerIndex === null ||
+        !game[selectedPlayerIndex]
+    ) {
+
+        nameElement.textContent =
+            "Välj en spelare";
+
+        input.disabled = true;
+        addButton.disabled = true;
+
+        return;
+
+    }
+
+    nameElement.textContent =
+        game[selectedPlayerIndex].name;
+
+    input.disabled = locked;
+    addButton.disabled = locked;
 
 }
 
@@ -1111,23 +1350,26 @@ function renderChicagoPanel() {
             "breakerSelection"
         );
 
-    if (activeChicago === null) {
+    if (
+        activeChicago === null ||
+        !game[activeChicago]
+    ) {
 
-        resultPanel
-            .classList
-            .add("hidden");
+        resultPanel.classList.add(
+            "hidden"
+        );
 
-        breakerSelection
-            .classList
-            .add("hidden");
+        breakerSelection.classList.add(
+            "hidden"
+        );
 
         return;
 
     }
 
-    playerPanel
-        .classList
-        .add("hidden");
+    playerPanel.classList.add(
+        "hidden"
+    );
 
     const player =
         game[activeChicago];
@@ -1140,9 +1382,9 @@ function renderChicagoPanel() {
             player.name +
             " har sagt Chicago";
 
-    resultPanel
-        .classList
-        .remove("hidden");
+    resultPanel.classList.remove(
+        "hidden"
+    );
 
 }
 
@@ -1183,6 +1425,25 @@ function renderHistory() {
 
 }
 
+
+/* =========================
+   HJÄLPFUNKTIONER
+========================= */
+
+function getLeaderScore() {
+
+    if (game.length === 0) {
+        return 0;
+    }
+
+    return Math.max(
+        ...game.map(function(player) {
+            return player.score;
+        })
+    );
+
+}
+
 function formatPoints(value) {
 
     if (value > 0) {
@@ -1198,18 +1459,22 @@ function escapeHtml(text) {
     const div =
         document.createElement("div");
 
-    div.textContent = text;
+    div.textContent =
+        String(text);
 
     return div.innerHTML;
 
 }
 
-render();
-
-function toggleSection(contentId, button) {
+function toggleSection(
+    contentId,
+    button
+) {
 
     const content =
-        document.getElementById(contentId);
+        document.getElementById(
+            contentId
+        );
 
     const arrow =
         button.querySelector(
@@ -1250,3 +1515,41 @@ function toggleSection(contentId, button) {
     }
 
 }
+
+
+/* =========================
+   TANGENTBORD
+========================= */
+
+const sharedScoreInput =
+    document.getElementById(
+        "sharedScoreInput"
+    );
+
+if (sharedScoreInput) {
+
+    sharedScoreInput.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+
+                event.preventDefault();
+
+                addScoreToSelectedPlayer();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================
+   STARTA
+========================= */
+
+prepareGameData();
+saveGame();
+render();
