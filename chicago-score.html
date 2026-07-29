@@ -17,7 +17,7 @@
 
     <link
         rel="stylesheet"
-        href="css/chicago.css"
+        href="css/chicago.css?v=6"
     >
 </head>
 
@@ -94,7 +94,62 @@
 
             </div>
 
-            <div id="scoreboard"></div>
+            <div class="scoreboard-column-headings">
+
+                <span>Spelare</span>
+
+                <span>Chicago</span>
+
+                <span>Poäng</span>
+
+                <span></span>
+
+            </div>
+
+            <div
+                id="scoreboard"
+                class="player-list"
+            ></div>
+
+            <section class="shared-score-entry">
+
+                <div class="selected-player-display">
+
+                    <span class="selected-player-label">
+                        Vald spelare
+                    </span>
+
+                    <strong id="selectedPlayerName">
+                        Välj en spelare
+                    </strong>
+
+                </div>
+
+                <label
+                    for="sharedScoreInput"
+                    class="score-input-label"
+                >
+                    Poäng
+                </label>
+
+                <input
+                    type="number"
+                    id="sharedScoreInput"
+                    min="-100"
+                    step="1"
+                    inputmode="numeric"
+                    placeholder="Poäng"
+                >
+
+                <button
+                    type="button"
+                    class="shared-add-button"
+                    onclick="addScoreToSelectedPlayer()"
+                >
+                    Lägg till
+                </button>
+
+            </section>
 
         </section>
 
@@ -113,63 +168,6 @@
         >
             FYRTAL
         </button>
-        
-        <section
-            id="fourKindPlayerPanel"
-            class="chicago-panel four-kind-panel hidden"
-        >
-            <h2>Vem fick fyrtal?</h2>
-        
-            <div
-                id="fourKindPlayerButtons"
-                class="chicago-player-buttons"
-            ></div>
-        
-            <button
-                type="button"
-                class="cancel-button"
-                onclick="closeFourKindPlayerSelection()"
-            >
-                Avbryt
-            </button>
-        </section>
-        
-        <section
-            id="fourKindResultPanel"
-            class="chicago-panel four-kind-panel hidden"
-        >
-            <div class="panel-label">
-                Fyrtal
-            </div>
-        
-            <h2 id="fourKindPlayerName"></h2>
-        
-            <button
-                type="button"
-                class="action-button reset-everyone-button"
-                onclick="resetOthersAfterFourKind()"
-            >
-                <span>Nollställ alla andra</span>
-                <span>0 poäng och 0 Chicago</span>
-            </button>
-        
-            <button
-                type="button"
-                class="action-button four-kind-points-button"
-                onclick="giveFourKindPoints()"
-            >
-                <span>16 poäng</span>
-                <span>+16 till spelaren</span>
-            </button>
-        
-            <button
-                type="button"
-                class="cancel-button"
-                onclick="cancelFourKind()"
-            >
-                Avbryt fyrtal
-            </button>
-        </section>
 
         <section
             id="chicagoPlayerPanel"
@@ -210,7 +208,7 @@
                 onclick="completeChicago()"
             >
                 Klarade Chicago
-                <span>+15 poäng</span>
+                <span>+15 poäng och +1 🌟</span>
             </button>
 
             <button
@@ -252,6 +250,67 @@
 
         </section>
 
+        <section
+            id="fourKindPlayerPanel"
+            class="chicago-panel four-kind-panel hidden"
+        >
+
+            <h2>Vem fick fyrtal?</h2>
+
+            <div
+                id="fourKindPlayerButtons"
+                class="chicago-player-buttons"
+            ></div>
+
+            <button
+                type="button"
+                class="cancel-button"
+                onclick="closeFourKindPlayerSelection()"
+            >
+                Avbryt
+            </button>
+
+        </section>
+
+        <section
+            id="fourKindResultPanel"
+            class="chicago-panel four-kind-panel hidden"
+        >
+
+            <div class="panel-label">
+                Fyrtal
+            </div>
+
+            <h2 id="fourKindPlayerName"></h2>
+
+            <button
+                type="button"
+                class="action-button reset-everyone-button"
+                onclick="resetOthersAfterFourKind()"
+            >
+                <span>Nollställ alla andra</span>
+                <span>0 poäng och 0 Chicago</span>
+            </button>
+
+            <button
+                type="button"
+                class="action-button four-kind-points-button"
+                onclick="giveFourKindPoints()"
+            >
+                <span>16 poäng</span>
+                <span>+16 till spelaren</span>
+            </button>
+
+            <button
+                type="button"
+                class="cancel-button"
+                onclick="cancelFourKind()"
+            >
+                Avbryt fyrtal
+            </button>
+
+        </section>
+
         <section class="collapsible-box">
 
             <button
@@ -260,24 +319,24 @@
                 onclick="toggleSection('historyContent', this)"
                 aria-expanded="false"
             >
-        
+
                 <span>Historik</span>
-        
+
                 <span class="collapse-arrow">
                     ▼
                 </span>
-        
+
             </button>
-        
+
             <div
                 id="historyContent"
                 class="collapsible-content hidden"
             >
-        
+
                 <div id="history"></div>
-        
+
             </div>
-        
+
         </section>
 
         <section class="collapsible-box">
@@ -288,26 +347,27 @@
                 onclick="toggleSection('rulesContent', this)"
                 aria-expanded="false"
             >
-        
+
                 <span>Regler</span>
-        
+
                 <span class="collapse-arrow">
                     ▼
                 </span>
-        
+
             </button>
-        
+
             <div
                 id="rulesContent"
                 class="collapsible-content hidden"
             >
-        
+
                 <div class="rules-content">
-        
+
                     <p>
-                        Vanliga handpoäng skrivs direkt på varje spelare.
+                        Välj en spelare i poängtavlan och skriv sedan
+                        in handens poäng i det gemensamma poängfältet.
                     </p>
-        
+
                     <p>
                         En klarad Chicago ger
                         <strong>+15 poäng</strong>
@@ -315,40 +375,64 @@
                         <strong>+1 Chicago</strong>.
                         Handens vanliga poäng räknas inte.
                     </p>
-        
+
+                    <p>
+                        Varje Chicago visas som en
+                        <strong>🌟</strong>
+                        i poängtavlan.
+                    </p>
+
                     <p>
                         Om spelaren blir bräckt får spelaren
                         <strong>−15 poäng</strong>
                         och förlorar
                         <strong>1 Chicago</strong>.
                     </p>
-        
+
                     <p>
                         Chicago-antalet kan aldrig bli lägre än 0.
                     </p>
-        
+
                     <p>
                         Spelaren som bräcker får
                         <strong>+5 poäng</strong>.
                     </p>
-        
+
                     <p>
                         Vid 42 poäng får spelaren inte längre byta kort.
+                        Då visas knappen
+                        <strong>→ 20</strong>.
                     </p>
-        
+
                     <p>
-                        För att vinna krävs minst 52 poäng och minst 1 Chicago.
+                        När knappen
+                        <strong>→ 20</strong>
+                        används sätts spelarens poäng till exakt 20.
                     </p>
-        
+
+                    <p>
+                        Fyrtal kan antingen ge
+                        <strong>+16 poäng</strong>
+                        eller nollställa alla andra spelares poäng och
+                        Chicago.
+                    </p>
+
+                    <p>
+                        För att vinna krävs minst
+                        <strong>52 poäng</strong>
+                        och minst
+                        <strong>1 Chicago</strong>.
+                    </p>
+
                 </div>
-        
+
             </div>
-        
+
         </section>
 
     </main>
 
-    <script src="js/chicago.js"></script>
+    <script src="js/chicago.js?v=6"></script>
 
 </body>
 </html>
