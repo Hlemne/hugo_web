@@ -391,6 +391,64 @@ function addHandScore(points, handName) {
 
 }
 
+function addRoundWinnerScore() {
+
+    if (activeFourKind !== null) {
+
+        alert(
+            "Avgör det aktiva fyrtalet först."
+        );
+
+        return;
+
+    }
+
+    if (activeChicago !== null) {
+
+        alert(
+            "Avgör den aktiva Chicagon först."
+        );
+
+        return;
+
+    }
+
+    if (
+        selectedPlayerIndex === null ||
+        !game[selectedPlayerIndex]
+    ) {
+
+        alert(
+            "Välj först en spelare i poängtavlan."
+        );
+
+        return;
+
+    }
+
+    saveUndo();
+
+    const player =
+        game[selectedPlayerIndex];
+
+    player.score += 5;
+
+    addHistory(
+        player.name +
+        " vann omgången och fick +5 poäng. Total: " +
+        player.score +
+        " poäng."
+    );
+
+    checkWinner(
+        selectedPlayerIndex
+    );
+
+    saveGame();
+    render();
+
+}
+
 /* =========================
    CHICAGO
 ========================= */
@@ -1372,6 +1430,11 @@ function renderSelectedPlayer() {
             ".hand-score-buttons button"
         );
 
+    const roundWinnerButton =
+        document.querySelector(
+            ".round-winner-button"
+        );
+
     const locked =
         activeChicago !== null ||
         activeFourKind !== null;
@@ -1386,6 +1449,7 @@ function renderSelectedPlayer() {
 
         input.disabled = true;
         addButton.disabled = true;
+        roundWinnerButton.disabled = true;
         
         handButtons.forEach(
             function(button) {
@@ -1402,7 +1466,8 @@ function renderSelectedPlayer() {
 
     input.disabled = locked;
     addButton.disabled = locked;
-
+    roundWinnerButton.disabled = locked;
+    
     handButtons.forEach(
         function(button) {
             button.disabled = locked;
