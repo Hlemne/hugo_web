@@ -294,16 +294,48 @@ select {
 ========================================================= */
 
 .shared-score-entry {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 105px;
+    display: flex;
+    flex-direction: column;
     gap: 9px;
     margin-top: 14px;
     padding-top: 14px;
     border-top: 1px solid #dfe3e7;
 }
 
+.score-entry-row {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(75px, 0.8fr)
+        minmax(80px, 0.8fr);
+    gap: 8px;
+    width: 100%;
+}
+
+.round-winner-button {
+    min-width: 0;
+    min-height: 52px;
+    padding: 8px;
+    color: white;
+    background: #27ae60;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.15;
+    cursor: pointer;
+}
+
+.round-winner-button:active {
+    transform: scale(0.98);
+}
+
+.round-winner-button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
 .selected-player-display {
-    grid-column: 1 / -1;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -385,7 +417,6 @@ select {
 }
 
 .hand-score-buttons {
-    grid-column: 1 / -1;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
