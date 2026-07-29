@@ -132,22 +132,34 @@
                     Poäng
                 </label>
 
-                <input
-                    type="number"
-                    id="sharedScoreInput"
-                    min="-100"
-                    step="1"
-                    inputmode="numeric"
-                    placeholder="Poäng"
-                >
+                <div class="score-entry-row">
 
-                <button
-                    type="button"
-                    class="shared-add-button"
-                    onclick="addScoreToSelectedPlayer()"
-                >
-                    Lägg till
-                </button>
+                    <button
+                        type="button"
+                        class="round-winner-button"
+                        onclick="addRoundWinnerScore()"
+                    >
+                        Vann omgång
+                    </button>
+                
+                    <input
+                        type="number"
+                        id="sharedScoreInput"
+                        min="-100"
+                        step="1"
+                        inputmode="numeric"
+                        placeholder="Poäng"
+                    >
+                
+                    <button
+                        type="button"
+                        class="shared-add-button"
+                        onclick="addScoreToSelectedPlayer()"
+                    >
+                        Lägg till
+                    </button>
+                
+                </div>
                 
                 <div class="hand-score-buttons">
 
