@@ -1,7 +1,30 @@
+/* =========================================================
+   GEMENSAMT
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =========================================================
+   CHICAGO – SPELSIDA
+========================================================= */
+
 .chicago-page {
+    min-height: 100vh;
     margin: 0;
     padding: 0;
-    min-height: 100vh;
     align-items: flex-start;
 }
 
@@ -13,8 +36,12 @@
     padding: 12px;
     color: white;
     background: rgba(0, 0, 0, 0.78);
-    box-sizing: border-box;
 }
+
+
+/* =========================================================
+   TOPPRAD
+========================================================= */
 
 .top-bar {
     display: grid;
@@ -44,9 +71,12 @@
     justify-self: end;
 }
 
+
+/* =========================================================
+   GEMENSAMMA KORT
+========================================================= */
+
 .scoreboard-box,
-.history-box,
-.rules-box,
 .chicago-panel,
 .winner-box {
     padding: 14px;
@@ -66,8 +96,7 @@
 }
 
 .section-heading h2,
-.chicago-panel h2,
-.rules-box h2 {
+.chicago-panel h2 {
     margin: 0;
 }
 
@@ -92,168 +121,316 @@
     cursor: pointer;
 }
 
-/* Spelarna visas två bredvid varandra */
-#scoreboard {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+.undo-button:active,
+.cancel-button:active {
+    transform: scale(0.98);
 }
 
-.player-card {
-    min-width: 0;
-    padding: 11px;
+
+/* =========================================================
+   NY POÄNGTAVLA
+========================================================= */
+
+.scoreboard-column-headings {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        86px
+        66px
+        54px;
+    align-items: center;
+    gap: 7px;
+    padding: 0 10px 7px;
+    color: #6b7280;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.scoreboard-column-headings span:nth-child(2),
+.scoreboard-column-headings span:nth-child(3),
+.scoreboard-column-headings span:nth-child(4) {
+    text-align: center;
+}
+
+#scoreboard,
+.player-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.player-list-row {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        86px
+        66px
+        54px;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+    min-height: 58px;
+    padding: 9px 10px;
+    color: #222;
     background: #f1f3f5;
     border: 2px solid transparent;
-    border-radius: 13px;
-    box-sizing: border-box;
+    border-radius: 12px;
+    cursor: pointer;
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        transform 0.1s ease;
 }
 
-.player-card.leader {
+.player-list-row:active {
+    transform: scale(0.99);
+}
+
+.player-list-row.selected {
+    background: #eaf4fc;
+    border-color: #3498db;
+    box-shadow:
+        0 0 0 3px
+        rgba(52, 152, 219, 0.12);
+}
+
+.player-list-row.leader {
     border-color: #f1c40f;
 }
 
-.player-card.winner {
+.player-list-row.active-chicago {
+    border-color: #e67e22;
+    box-shadow:
+        0 0 0 3px
+        rgba(230, 126, 34, 0.18);
+}
+
+.player-list-row.winner {
     color: white;
     background: #198754;
     border-color: #198754;
 }
 
-.player-card.active-chicago {
-    border-color: #e67e22;
-    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2);
+.player-list-row.winner.selected {
+    box-shadow:
+        0 0 0 3px
+        rgba(25, 135, 84, 0.25);
 }
 
-.player-card-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 6px;
-}
-
-.player-name-area {
+.list-player-name {
     display: flex;
     align-items: center;
     min-width: 0;
-    gap: 4px;
+    gap: 5px;
+    font-size: 16px;
+    font-weight: bold;
 }
 
-.player-name {
+.list-player-name span:last-child {
+    min-width: 0;
     overflow: hidden;
-    font-size: 15px;
-    font-weight: bold;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .leader-icon {
     flex-shrink: 0;
-    font-size: 15px;
+    font-size: 16px;
 }
 
-.player-score {
-    flex-shrink: 0;
-    font-size: 28px;
+.list-chicago-stars {
+    min-width: 0;
+    overflow: hidden;
+    font-size: 18px;
+    line-height: 1;
+    letter-spacing: -4px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.list-player-score {
+    font-size: 22px;
     font-weight: bold;
     line-height: 1;
+    text-align: center;
+    white-space: nowrap;
 }
 
-.player-info {
+.list-player-action {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-    margin: 10px 0;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 0;
 }
 
-.info-badge {
-    max-width: 100%;
-    padding: 5px 7px;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: bold;
-    box-sizing: border-box;
-}
-
-.chicago-badge {
-    color: white;
-    background: #8e44ad;
-}
-
-.exchange-open {
-    color: white;
-    background: #2980b9;
-}
-
-.exchange-stopped {
+.drop-inline-button {
+    min-width: 48px;
+    min-height: 34px;
+    padding: 5px 8px;
     color: white;
     background: #c0392b;
-}
-
-.active-badge {
-    color: white;
-    background: #e67e22;
-}
-
-.score-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.score-input {
-    width: 100%;
-    min-width: 0;
-    min-height: 44px;
-    padding: 9px;
-    color: #222;
-    background: white;
-    border: 2px solid #d9dde1;
-    border-radius: 9px;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    box-sizing: border-box;
-}
-
-.add-score-button {
-    width: 100%;
-    min-height: 42px;
-    padding: 8px;
-    color: white;
-    background: #3498db;
     border: none;
-    border-radius: 9px;
+    border-radius: 999px;
     font-size: 13px;
     font-weight: bold;
+    white-space: nowrap;
     cursor: pointer;
 }
 
-.score-input:disabled,
-.add-score-button:disabled {
+.drop-inline-button:active {
+    transform: scale(0.96);
+}
+
+.drop-inline-button:disabled {
     opacity: 0.45;
     cursor: not-allowed;
 }
 
-/* Stor gemensam Chicago-knapp */
-.main-chicago-button {
+
+/* =========================================================
+   GEMENSAM POÄNGINMATNING
+========================================================= */
+
+.shared-score-entry {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 105px;
+    gap: 9px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #dfe3e7;
+}
+
+.selected-player-display {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-height: 48px;
+    padding: 10px 12px;
+    background: #f3f4f6;
+    border-radius: 10px;
+}
+
+.selected-player-label {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#selectedPlayerName {
+    min-width: 0;
+    overflow: hidden;
+    color: #222;
+    font-size: 17px;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.score-input-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+}
+
+#sharedScoreInput {
     width: 100%;
-    min-height: 62px;
-    margin-bottom: 12px;
-    padding: 14px;
+    min-width: 0;
+    min-height: 52px;
+    padding: 9px 12px;
+    color: #222;
+    background: white;
+    border: 2px solid #d9dde1;
+    border-radius: 10px;
+    outline: none;
+    font-size: 19px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#sharedScoreInput:focus {
+    border-color: #3498db;
+    box-shadow:
+        0 0 0 3px
+        rgba(52, 152, 219, 0.13);
+}
+
+.shared-add-button {
+    width: 100%;
+    min-height: 52px;
+    padding: 9px;
     color: white;
-    background: #e67e22;
+    background: #3498db;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.shared-add-button:active {
+    transform: scale(0.98);
+}
+
+#sharedScoreInput:disabled,
+.shared-add-button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   HUVUDKNAPPAR
+========================================================= */
+
+.main-chicago-button,
+.main-four-kind-button {
+    width: 100%;
     border: none;
     border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
-    font-size: 21px;
+    color: white;
     font-weight: bold;
     letter-spacing: 1px;
     cursor: pointer;
 }
 
-.main-chicago-button:active {
+.main-chicago-button {
+    min-height: 62px;
+    margin-bottom: 12px;
+    padding: 14px;
+    background: #e67e22;
+    box-shadow:
+        0 4px 12px
+        rgba(0, 0, 0, 0.28);
+    font-size: 21px;
+}
+
+.main-four-kind-button {
+    min-height: 58px;
+    margin-bottom: 12px;
+    padding: 13px;
+    background: #8e44ad;
+    box-shadow:
+        0 4px 12px
+        rgba(0, 0, 0, 0.25);
+    font-size: 20px;
+}
+
+.main-chicago-button:active,
+.main-four-kind-button:active {
     transform: scale(0.98);
 }
+
+
+/* =========================================================
+   CHICAGO- OCH FYRTALSPANELER
+========================================================= */
 
 .chicago-panel {
     border: 3px solid #e67e22;
@@ -265,10 +442,14 @@
     font-size: 23px;
 }
 
-/* Val av vem som sa Chicago */
+.four-kind-panel {
+    border-color: #8e44ad;
+}
+
 .chicago-player-buttons {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
     gap: 9px;
     margin-bottom: 12px;
 }
@@ -277,13 +458,21 @@
     min-height: 52px;
     padding: 10px;
     color: white;
-    background: #8e44ad;
+    background: #e67e22;
     border: none;
     border-radius: 10px;
     font-size: 15px;
     font-weight: bold;
     overflow-wrap: anywhere;
     cursor: pointer;
+}
+
+.four-kind-player-choice {
+    background: #8e44ad;
+}
+
+.chicago-player-choice:active {
+    transform: scale(0.98);
 }
 
 .action-button {
@@ -308,12 +497,12 @@
     opacity: 0.9;
 }
 
-.success-button {
-    background: #27ae60;
+.action-button:active {
+    transform: scale(0.985);
 }
 
-.fail-button {
-    background: #c0392b;
+.success-button {
+    background: #27ae60;
 }
 
 .break-button {
@@ -322,6 +511,14 @@
 
 .confirm-button {
     background: #8e44ad;
+}
+
+.reset-everyone-button {
+    background: #c0392b;
+}
+
+.four-kind-points-button {
+    background: #27ae60;
 }
 
 .breaker-selection {
@@ -348,12 +545,16 @@
     border: 2px solid #ddd;
     border-radius: 9px;
     font-size: 16px;
-    box-sizing: border-box;
 }
 
 .cancel-button {
     width: 100%;
 }
+
+
+/* =========================================================
+   VINNARE
+========================================================= */
 
 .winner-box {
     display: flex;
@@ -364,6 +565,7 @@
 }
 
 .winner-icon {
+    flex-shrink: 0;
     font-size: 34px;
 }
 
@@ -378,6 +580,58 @@
 .winner-name {
     font-size: 20px;
     font-weight: bold;
+}
+
+
+/* =========================================================
+   HISTORIK OCH REGLER
+========================================================= */
+
+.collapsible-box {
+    margin-bottom: 12px;
+    color: #222;
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 15px;
+    box-shadow:
+        0 4px 14px
+        rgba(0, 0, 0, 0.24);
+    overflow: hidden;
+}
+
+.collapsible-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 58px;
+    padding: 14px 16px;
+    color: #222;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    cursor: pointer;
+}
+
+.collapsible-header:active {
+    background: #f3f4f6;
+}
+
+.collapse-arrow {
+    flex-shrink: 0;
+    margin-left: 12px;
+    color: #8e44ad;
+    font-size: 16px;
+}
+
+.collapsible-content {
+    padding: 0 16px 16px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.collapsible-content #history {
+    padding-top: 14px;
 }
 
 #history {
@@ -400,84 +654,24 @@
     border-bottom: none;
 }
 
-.rules-box {
-    text-align: left;
+.rules-content {
+    padding-top: 10px;
 }
 
-.rules-box h2 {
-    margin-bottom: 9px;
-    font-size: 18px;
-}
-
-.rules-box p {
-    margin: 5px 0;
+.rules-content p {
+    margin: 8px 0;
     font-size: 14px;
-    line-height: 1.4;
+    line-height: 1.5;
 }
 
-.hidden {
-    display: none !important;
-}
 
-/* Väldigt små mobiler */
-@media screen and (max-width: 370px) {
-    .chicago-game {
-        padding: 8px;
-    }
-
-    #scoreboard {
-        gap: 7px;
-    }
-
-    .player-card {
-        padding: 8px;
-    }
-
-    .player-name {
-        font-size: 13px;
-    }
-
-    .player-score {
-        font-size: 24px;
-    }
-
-    .info-badge {
-        font-size: 10px;
-    }
-
-    .score-input {
-        font-size: 16px;
-    }
-}
-
-/* På större skärmar kan spelarna fortfarande ligga två i rad */
-@media screen and (min-width: 700px) {
-    .chicago-game {
-        padding: 18px;
-    }
-
-    #scoreboard {
-        gap: 14px;
-    }
-
-    .player-card {
-        padding: 15px;
-    }
-
-    .player-name {
-        font-size: 18px;
-    }
-
-    .player-score {
-        font-size: 32px;
-    }
-}
-
-/* STARTSIDA FÖR CHICAGO */
+/* =========================================================
+   CHICAGO – STARTSIDA
+========================================================= */
 
 .chicago-start-page {
-    margin: 0;
     min-height: 100vh;
+    margin: 0;
     padding: 20px 14px 40px;
     color: white;
     background:
@@ -489,7 +683,6 @@
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
-    box-sizing: border-box;
 }
 
 .chicago-start-container {
@@ -516,7 +709,8 @@
     background: rgba(255, 255, 255, 0.97);
     border-radius: 22px;
     box-shadow:
-        0 16px 40px rgba(0, 0, 0, 0.3);
+        0 16px 40px
+        rgba(0, 0, 0, 0.3);
 }
 
 .chicago-start-header {
@@ -697,7 +891,6 @@
     border: none;
     outline: none;
     font-size: 16px;
-    box-sizing: border-box;
 }
 
 .player-name-input::placeholder {
@@ -782,9 +975,87 @@
     line-height: 1.45;
 }
 
-/* MOBILJUSTERINGAR */
+
+/* =========================================================
+   MOBIL
+========================================================= */
 
 @media screen and (max-width: 480px) {
+
+    .chicago-game {
+        padding: 10px;
+    }
+
+    .top-bar h1 {
+        font-size: 28px;
+    }
+
+    .scoreboard-box,
+    .chicago-panel,
+    .winner-box {
+        padding: 12px;
+    }
+
+    .scoreboard-column-headings {
+        grid-template-columns:
+            minmax(0, 1fr)
+            65px
+            52px
+            48px;
+        gap: 4px;
+        padding-right: 7px;
+        padding-left: 7px;
+        font-size: 9px;
+    }
+
+    .player-list-row {
+        grid-template-columns:
+            minmax(0, 1fr)
+            65px
+            52px
+            48px;
+        gap: 4px;
+        min-height: 56px;
+        padding: 8px 7px;
+    }
+
+    .list-player-name {
+        font-size: 14px;
+    }
+
+    .leader-icon {
+        font-size: 13px;
+    }
+
+    .list-chicago-stars {
+        font-size: 16px;
+        letter-spacing: -5px;
+    }
+
+    .list-player-score {
+        font-size: 19px;
+    }
+
+    .drop-inline-button {
+        min-width: 45px;
+        padding: 5px 6px;
+        font-size: 12px;
+    }
+
+    .shared-score-entry {
+        grid-template-columns:
+            minmax(0, 1fr)
+            95px;
+    }
+
+    #sharedScoreInput,
+    .shared-add-button {
+        min-height: 50px;
+    }
+
+    .chicago-player-buttons {
+        grid-template-columns: 1fr;
+    }
 
     .chicago-start-page {
         padding: 14px 10px 30px;
@@ -814,14 +1085,75 @@
 
 }
 
-@media screen and (max-width: 350px) {
+
+/* =========================================================
+   MYCKET SMÅ MOBILER
+========================================================= */
+
+@media screen and (max-width: 360px) {
+
+    .chicago-game {
+        padding: 7px;
+    }
+
+    .scoreboard-box {
+        padding: 9px;
+    }
+
+    .scoreboard-column-headings {
+        grid-template-columns:
+            minmax(0, 1fr)
+            55px
+            46px
+            44px;
+    }
+
+    .player-list-row {
+        grid-template-columns:
+            minmax(0, 1fr)
+            55px
+            46px
+            44px;
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+    .list-player-name {
+        font-size: 13px;
+    }
+
+    .list-chicago-stars {
+        font-size: 14px;
+    }
+
+    .list-player-score {
+        font-size: 17px;
+    }
+
+    .drop-inline-button {
+        min-width: 42px;
+        padding: 4px;
+        font-size: 11px;
+    }
+
+    .selected-player-display {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    #selectedPlayerName {
+        width: 100%;
+        text-align: left;
+    }
 
     .chicago-start-card {
         padding: 14px;
     }
 
     .player-count-control {
-        grid-template-columns: 48px 1fr 48px;
+        grid-template-columns:
+            48px 1fr 48px;
         gap: 7px;
     }
 
@@ -831,145 +1163,33 @@
     }
 
 }
-/* Hopfällbara sektioner */
 
-.collapsible-box {
-    margin-bottom: 12px;
-    color: #222;
-    background: rgba(255, 255, 255, 0.98);
-    border-radius: 15px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.24);
-    overflow: hidden;
+
+/* =========================================================
+   STÖRRE SKÄRMAR
+========================================================= */
+
+@media screen and (min-width: 700px) {
+
+    .chicago-game {
+        padding: 18px;
+    }
+
+    .player-list-row {
+        min-height: 64px;
+        padding: 11px 13px;
+    }
+
+    .list-player-name {
+        font-size: 18px;
+    }
+
+    .list-player-score {
+        font-size: 25px;
+    }
+
+    .list-chicago-stars {
+        font-size: 20px;
+    }
+
 }
-
-.collapsible-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    min-height: 58px;
-    padding: 14px 16px;
-    color: #222;
-    background: transparent;
-    border: none;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: left;
-    cursor: pointer;
-}
-
-.collapsible-header:active {
-    background: #f3f4f6;
-}
-
-.collapse-arrow {
-    flex-shrink: 0;
-    margin-left: 12px;
-    color: #8e44ad;
-    font-size: 16px;
-}
-
-.collapsible-content {
-    padding: 0 16px 16px;
-    border-top: 1px solid #e5e7eb;
-}
-
-.collapsible-content #history {
-    padding-top: 14px;
-}
-
-.rules-content {
-    padding-top: 10px;
-}
-
-.rules-content p {
-    margin: 8px 0;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-.drop-to-twenty-button {
-    width: 100%;
-    min-height: 42px;
-    padding: 9px;
-    color: white;
-    background: #c0392b;
-    border: none;
-    border-radius: 9px;
-    font-size: 13px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.drop-to-twenty-button:active {
-    transform: scale(0.98);
-}
-
-.drop-to-twenty-button:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-}
-
-.status-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 6px;
-    width: 100%;
-}
-
-.drop-inline-button {
-    flex-shrink: 0;
-    padding: 4px 8px;
-    color: white;
-    background: #c0392b;
-    border: none;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: bold;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-.drop-inline-button:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-}
-
-.main-four-kind-button {
-    width: 100%;
-    min-height: 58px;
-    margin-top: -3px;
-    margin-bottom: 12px;
-    padding: 13px;
-    color: white;
-    background: #8e44ad;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    font-size: 20px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    cursor: pointer;
-}
-
-.main-four-kind-button:active {
-    transform: scale(0.98);
-}
-
-.four-kind-panel {
-    border-color: #8e44ad;
-}
-
-.four-kind-player-choice {
-    background: #8e44ad;
-}
-
-.reset-everyone-button {
-    background: #c0392b;
-}
-
-.four-kind-points-button {
-    background: #27ae60;
-}
-
