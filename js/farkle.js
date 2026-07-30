@@ -354,7 +354,18 @@ function renderScoreboard() {
                     b.totalScore - a.totalScore
             );
 
+    let currentPosition = 0;
+
     sortedPlayers.forEach((player, index) => {
+
+        if (
+            index === 0 ||
+            player.totalScore !==
+            sortedPlayers[index - 1].totalScore
+        ) {
+            currentPosition = index + 1;
+        }
+
         const row =
             document.createElement('div');
 
@@ -371,7 +382,7 @@ function renderScoreboard() {
             document.createElement('span');
 
         position.className = 'player-position';
-        position.textContent = index + 1;
+        position.textContent = currentPosition;
 
         const name =
             document.createElement('span');
@@ -381,10 +392,10 @@ function renderScoreboard() {
 
         const farkleStreak =
             document.createElement('span');
-        
+
         farkleStreak.className =
             'player-farkle-streak';
-        
+
         farkleStreak.textContent =
             player.consecutiveFarkles > 0
                 ? '❌'.repeat(
