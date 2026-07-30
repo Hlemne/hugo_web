@@ -296,17 +296,23 @@ function undoLastAction() {
 }
 
 function confirmNewGame() {
+
     const shouldReset = confirm(
-        'Vill du avsluta spelet och börja om?'
+        'Vill du starta en ny match med samma spelare?'
     );
 
     if (!shouldReset) {
         return;
     }
 
-    localStorage.removeItem('farkleGameState');
+    gameState = createInitialState();
 
-    window.location.href = 'farkle.html';
+    saveGameState();
+
+    clearScoreInput();
+
+    renderGame();
+
 }
 
 function renderGame() {
