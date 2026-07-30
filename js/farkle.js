@@ -142,7 +142,7 @@ function addThrowScore() {
     
     gameState.turnScore += score;
     
-    currentPlayer.consecutiveFarkles = 0;
+    
 
     gameState.history.unshift(
         `${currentPlayer.name} fick ${score} poäng ` +
