@@ -8,14 +8,15 @@ if (savedPlayers.length === 0) {
 
 let gameState = loadGameState();
 
-function createInitialState() {
+function createInitialState(startingPlayerIndex = 0) {
     return {
         players: savedPlayers.map((name) => ({
             name: name,
             totalScore: 0,
             consecutiveFarkles: 0
         })),
-        currentPlayerIndex: 0,
+        startingPlayerIndex: startingPlayerIndex,
+        currentPlayerIndex: startingPlayerIndex,
         turnScore: 0,
         round: 1,
         history: [],
@@ -49,6 +50,14 @@ function loadGameState() {
 
         parsedState.snapshots = [];
 
+        if (
+            !Number.isInteger(
+                parsedState.startingPlayerIndex
+            )
+        ) {
+            parsedState.startingPlayerIndex = 0;
+        }
+
         return parsedState;
     } catch (error) {
         return createInitialState();
@@ -72,6 +81,8 @@ function saveSnapshot() {
         players: gameState.players.map((player) => ({
             ...player
         })),
+        startingPlayerIndex:
+            gameState.startingPlayerIndex,
         currentPlayerIndex:
             gameState.currentPlayerIndex,
         turnScore:
@@ -279,6 +290,9 @@ function undoLastAction() {
     gameState.players =
         previousState.players;
 
+    gameState.startingPlayerIndex =
+    previousState.startingPlayerIndex;
+
     gameState.currentPlayerIndex =
         previousState.currentPlayerIndex;
 
@@ -296,23 +310,33 @@ function undoLastAction() {
 }
 
 function confirmNewGame() {
-
     const shouldReset = confirm(
-        'Vill du starta en ny match med samma spelare?'
+        'Vill du starta en ny match med samma spelare? Nästa spelare i ordningen börjar.'
     );
 
     if (!shouldReset) {
         return;
     }
 
-    gameState = createInitialState();
+    const previousStartingPlayer =
+        Number.isInteger(
+            gameState.startingPlayerIndex
+        )
+            ? gameState.startingPlayerIndex
+            : 0;
+
+    const nextStartingPlayer =
+        (
+            previousStartingPlayer + 1
+        ) % savedPlayers.length;
+
+    gameState = createInitialState(
+        nextStartingPlayer
+    );
 
     saveGameState();
-
     clearScoreInput();
-
     renderGame();
-
 }
 
 function renderGame() {
