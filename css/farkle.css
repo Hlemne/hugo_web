@@ -140,9 +140,9 @@
 }
 
 .projected-total {
-    font-size: 0.5em;
-    font-weight: 600;
-    opacity: 0.75;
+    font-size: 1em;
+    font-weight: bold;
+    opacity: 1;
     white-space: nowrap;
 }
 
