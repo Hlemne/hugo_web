@@ -132,6 +132,20 @@
    AKTUELL SPELARE
 ========================= */
 
+.current-player-name-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.45rem;
+}
+
+.projected-total {
+    font-size: 0.5em;
+    font-weight: 600;
+    opacity: 0.75;
+    white-space: nowrap;
+}
+
 .current-player-card {
     text-align: center;
 }
@@ -162,6 +176,7 @@
 .turn-score strong {
     font-size: 2rem;
 }
+
 
 /* =========================
    POÄNGINMATNING
