@@ -138,6 +138,7 @@ function addQuickScore(score) {
         currentValue + score;
 
     renderProjectedTotal();
+    renderFinalRoundTarget();
 }
 
 function addThrowScore() {
@@ -365,6 +366,61 @@ function renderProjectedTotal() {
         `- ${projectedTotal.toLocaleString('sv-SE')}`;
 }
 
+function renderFinalRoundTarget() {
+    const targetElement =
+        document.getElementById('finalRoundTarget');
+
+    const highestScore =
+        Math.max(
+            ...gameState.players.map(
+                (player) => player.totalScore
+            )
+        );
+
+    if (highestScore < 10000) {
+        targetElement.classList.add('hidden');
+        targetElement.textContent = '';
+        return;
+    }
+
+    const currentPlayer =
+        gameState.players[
+            gameState.currentPlayerIndex
+        ];
+
+    const scoreInput =
+        document.getElementById('scoreInput');
+
+    const enteredScore =
+        Number(scoreInput.value) || 0;
+
+    const currentProjectedTotal =
+        currentPlayer.totalScore +
+        gameState.turnScore +
+        enteredScore;
+
+    const winningTotal =
+        highestScore + 1;
+
+    const pointsNeeded =
+        Math.max(
+            0,
+            winningTotal -
+            currentProjectedTotal
+        );
+
+    targetElement.classList.remove('hidden');
+
+    if (pointsNeeded === 0) {
+        targetElement.textContent =
+            `Du leder just nu med ${currentProjectedTotal.toLocaleString('sv-SE')} poäng.`;
+    } else {
+        targetElement.textContent =
+            `Behöver ${winningTotal.toLocaleString('sv-SE')} totalt – ` +
+            `${pointsNeeded.toLocaleString('sv-SE')} poäng till.`;
+    }
+}
+
 function renderGame() {
     const currentPlayer =
         gameState.players[
@@ -384,6 +440,7 @@ function renderGame() {
     ).textContent = `Runda ${gameState.round}`;
 
     renderProjectedTotal();
+    renderFinalRoundTarget();
     renderScoreboard();
     renderHistory();
 }
@@ -505,6 +562,7 @@ document
     .getElementById('scoreInput')
     .addEventListener('input', () => {
         renderProjectedTotal();
+        renderFinalRoundTarget();
     });
 
 document
