@@ -339,6 +339,29 @@ function confirmNewGame() {
     renderGame();
 }
 
+function renderProjectedTotal() {
+    const currentPlayer =
+        gameState.players[
+            gameState.currentPlayerIndex
+        ];
+
+    const scoreInput =
+        document.getElementById('scoreInput');
+
+    const enteredScore =
+        Number(scoreInput.value) || 0;
+
+    const projectedTotal =
+        currentPlayer.totalScore +
+        gameState.turnScore +
+        enteredScore;
+
+    document.getElementById(
+        'currentPlayerProjectedTotal'
+    ).textContent =
+        `(${projectedTotal.toLocaleString('sv-SE')})`;
+}
+
 function renderGame() {
     const currentPlayer =
         gameState.players[
@@ -357,6 +380,7 @@ function renderGame() {
         'roundNumber'
     ).textContent = `Runda ${gameState.round}`;
 
+    renderProjectedTotal();
     renderScoreboard();
     renderHistory();
 }
@@ -473,6 +497,22 @@ function renderHistory() {
             );
         });
 }
+
+document
+    .getElementById('scoreInput')
+    .addEventListener('input', () => {
+        renderProjectedTotal();
+    });
+
+document
+    .getElementById('scoreInput')
+    .addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            addThrowScore();
+        }
+    });
+
+renderGame();
 
 document
     .getElementById('scoreInput')
