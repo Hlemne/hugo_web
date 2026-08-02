@@ -256,6 +256,18 @@
     display: none !important;
 }
 
+.target-red {
+    color: #c0392b;
+}
+
+.target-green {
+    color: #27ae60;
+}
+
+.target-orange {
+    color: #f39c12;
+}
+
 /* =========================
    RUBRIKER
 ========================= */
