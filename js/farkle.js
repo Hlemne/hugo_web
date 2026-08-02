@@ -134,7 +134,10 @@ function addQuickScore(score) {
     const currentValue =
         Number(scoreInput.value) || 0;
 
-    scoreInput.value = currentValue + score;
+    scoreInput.value =
+        currentValue + score;
+
+    renderProjectedTotal();
 }
 
 function addThrowScore() {
@@ -503,16 +506,6 @@ document
     .addEventListener('input', () => {
         renderProjectedTotal();
     });
-
-document
-    .getElementById('scoreInput')
-    .addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            addThrowScore();
-        }
-    });
-
-renderGame();
 
 document
     .getElementById('scoreInput')
