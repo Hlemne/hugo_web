@@ -362,7 +362,7 @@ function renderProjectedTotal() {
     document.getElementById(
         'currentPlayerProjectedTotal'
     ).textContent =
-        `(${projectedTotal.toLocaleString('sv-SE')})`;
+        `- ${projectedTotal.toLocaleString('sv-SE')}`;
 }
 
 function renderGame() {
