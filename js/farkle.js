@@ -411,13 +411,42 @@ function renderFinalRoundTarget() {
 
     targetElement.classList.remove('hidden');
 
-    if (pointsNeeded === 0) {
+    targetElement.classList.remove(
+        'target-red',
+        'target-green',
+        'target-orange'
+    );
+    
+    if (currentProjectedTotal > highestScore) {
+    
+        targetElement.classList.add(
+            'target-green'
+        );
+    
         targetElement.textContent =
-            `Du leder just nu med ${currentProjectedTotal.toLocaleString('sv-SE')} poäng.`;
+            `Du leder just nu med ${currentProjectedTotal.toLocaleString('sv-SE')} poäng!`;
+    
+    } else if (
+        currentProjectedTotal === highestScore
+    ) {
+    
+        targetElement.classList.add(
+            'target-orange'
+        );
+    
+        targetElement.textContent =
+            `Du har samma poäng som ledaren. Du behöver minst 50 poäng till för att vinna.`;
+    
     } else {
+    
+        targetElement.classList.add(
+            'target-red'
+        );
+    
         targetElement.textContent =
             `Behöver ${winningTotal.toLocaleString('sv-SE')} totalt – ` +
             `${pointsNeeded.toLocaleString('sv-SE')} poäng till.`;
+    
     }
 }
 
