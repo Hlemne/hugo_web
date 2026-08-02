@@ -435,7 +435,7 @@ function renderFinalRoundTarget() {
         );
     
         targetElement.textContent =
-            `Du har samma poäng som ledaren. Du behöver minst 50 poäng till för att vinna.`;
+            `Du är just nu på delad förstaplats. Du behöver minst 50 poäng till för att vinna.`;
     
     } else {
     
