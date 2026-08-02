@@ -243,6 +243,19 @@
     background: #e74c3c;
 }
 
+.final-round-target {
+    margin: 0.8rem 0 0;
+    color: #c0392b;
+    font-size: 0.95rem;
+    font-weight: bold;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
 /* =========================
    RUBRIKER
 ========================= */
