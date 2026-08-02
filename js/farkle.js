@@ -400,7 +400,7 @@ function renderFinalRoundTarget() {
         enteredScore;
 
     const winningTotal =
-        highestScore + 1;
+        highestScore + 50;
 
     const pointsNeeded =
         Math.max(
