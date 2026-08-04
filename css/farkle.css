@@ -580,3 +580,12 @@
         font-size: 1.75rem;
     }
 }
+
+
+button,
+a,
+input,
+select,
+summary {
+    touch-action: manipulation;
+}
