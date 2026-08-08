@@ -370,23 +370,49 @@ function renderFinalRoundTarget() {
     const targetElement =
         document.getElementById('finalRoundTarget');
 
-    const highestScore =
+    const currentIndex =
+        gameState.currentPlayerIndex;
+
+    const currentPlayer =
+        gameState.players[currentIndex];
+
+    // Högsta sparade poängen i hela spelet.
+    // Används bara för att avgöra om 10 000-fasen har börjat.
+    const highestScoreOverall =
         Math.max(
             ...gameState.players.map(
                 (player) => player.totalScore
             )
         );
 
-    if (highestScore < 10000) {
+    // Dölj informationen tills någon nått 10 000.
+    if (highestScoreOverall < 10000) {
         targetElement.classList.add('hidden');
+
+        targetElement.classList.remove(
+            'target-red',
+            'target-green',
+            'target-orange'
+        );
+
         targetElement.textContent = '';
+
         return;
     }
 
-    const currentPlayer =
-        gameState.players[
-            gameState.currentPlayerIndex
-        ];
+    // Hitta den högsta poängen bland ALLA ANDRA spelare.
+    const otherPlayers =
+        gameState.players.filter(
+            (player, index) =>
+                index !== currentIndex
+        );
+
+    const highestOtherScore =
+        Math.max(
+            ...otherPlayers.map(
+                (player) => player.totalScore
+            )
+        );
 
     const scoreInput =
         document.getElementById('scoreInput');
@@ -394,60 +420,68 @@ function renderFinalRoundTarget() {
     const enteredScore =
         Number(scoreInput.value) || 0;
 
+    // Aktiva spelarens möjliga total just nu.
     const currentProjectedTotal =
         currentPlayer.totalScore +
         gameState.turnScore +
         enteredScore;
 
-    const winningTotal =
-        highestScore + 50;
-
-    const pointsNeeded =
-        Math.max(
-            0,
-            winningTotal -
-            currentProjectedTotal
-        );
-
-    targetElement.classList.remove('hidden');
-
     targetElement.classList.remove(
+        'hidden',
         'target-red',
         'target-green',
         'target-orange'
     );
-    
-    if (currentProjectedTotal > highestScore) {
-    
+
+    // SPELAREN LEDER
+    if (
+        currentProjectedTotal >
+        highestOtherScore
+    ) {
         targetElement.classList.add(
             'target-green'
         );
-    
+
         targetElement.textContent =
-            `Du leder just nu med ${currentProjectedTotal.toLocaleString('sv-SE')} poäng!`;
-    
-    } else if (
-        currentProjectedTotal === highestScore
+            `Du leder med ` +
+            `${currentProjectedTotal.toLocaleString('sv-SE')} poäng!`;
+
+        return;
+    }
+
+    // SPELAREN LIGGER EXAKT LIKA
+    if (
+        currentProjectedTotal ===
+        highestOtherScore
     ) {
-    
         targetElement.classList.add(
             'target-orange'
         );
-    
+
         targetElement.textContent =
-            `Du är just nu på delad förstaplats. Du behöver minst 50 poäng till för att vinna.`;
-    
-    } else {
-    
-        targetElement.classList.add(
-            'target-red'
-        );
-    
-        targetElement.textContent =
-            `Behöver ${winningTotal.toLocaleString('sv-SE')} totalt – ` +
-            `${pointsNeeded.toLocaleString('sv-SE')} poäng till.`;
-    
+            `Delad ledning på ` +
+            `${currentProjectedTotal.toLocaleString('sv-SE')} poäng – ` +
+            `50 poäng till krävs för ensam ledning.`;
+
+        return;
     }
+
+    // SPELAREN LIGGER EFTER
+    const winningTotal =
+        highestOtherScore + 50;
+
+    const pointsNeeded =
+        winningTotal -
+        currentProjectedTotal;
+
+    targetElement.classList.add(
+        'target-red'
+    );
+
+    targetElement.textContent =
+        `Behöver ` +
+        `${winningTotal.toLocaleString('sv-SE')} totalt – ` +
+        `${pointsNeeded.toLocaleString('sv-SE')} poäng till.`;
 }
 
 function renderGame() {
