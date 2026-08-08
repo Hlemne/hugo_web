@@ -333,6 +333,15 @@ function showWinner() {
         .remove('hidden');
 }
 
+function closeWinnerPopup() {
+    const popup =
+        document.getElementById('winnerPopup');
+
+    if (popup) {
+        popup.classList.add('hidden');
+    }
+}
+
 function bankTurn() {
     const enteredScore =
         Number(document.getElementById('scoreInput').value) || 0;
@@ -562,6 +571,9 @@ function confirmNewGame() {
     );
 
     saveGameState();
+
+    closeWinnerPopup();
+
     clearScoreInput();
     renderGame();
 }
