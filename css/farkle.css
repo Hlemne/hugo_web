@@ -582,6 +582,77 @@
 }
 
 
+.winner-popup {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0, 0, 0, 0.72);
+}
+
+.winner-popup-card {
+    width: 100%;
+    max-width: 380px;
+
+    padding: 28px 20px;
+
+    color: #202020;
+    background: white;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 15px 40px
+        rgba(0, 0, 0, 0.4);
+
+    text-align: center;
+}
+
+.winner-popup-icon {
+    margin-bottom: 8px;
+    font-size: 52px;
+}
+
+.winner-popup-card h2 {
+    margin:
+        0 0 8px;
+
+    font-size: 28px;
+}
+
+.winner-popup-card p {
+    margin:
+        0 0 22px;
+
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.winner-new-game-button {
+    width: 100%;
+    min-height: 54px;
+
+    padding: 12px;
+
+    color: white;
+    background: #2ecc71;
+
+    border: none;
+    border-radius: 11px;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
 button,
 a,
 input,
