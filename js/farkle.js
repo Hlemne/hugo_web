@@ -15,10 +15,19 @@ function createInitialState(startingPlayerIndex = 0) {
             totalScore: 0,
             consecutiveFarkles: 0
         })),
+
         startingPlayerIndex: startingPlayerIndex,
         currentPlayerIndex: startingPlayerIndex,
+
         turnScore: 0,
         round: 1,
+
+        finalRoundActive: false,
+        finalRoundTriggerIndex: null,
+        finalTurnsRemaining: 0,
+
+        gameOver: false,
+
         history: [],
         snapshots: []
     };
@@ -57,7 +66,35 @@ function loadGameState() {
         ) {
             parsedState.startingPlayerIndex = 0;
         }
-
+        if (
+            typeof parsedState.finalRoundActive !==
+            'boolean'
+        ) {
+            parsedState.finalRoundActive = false;
+        }
+        
+        if (
+            !Number.isInteger(
+                parsedState.finalRoundTriggerIndex
+            )
+        ) {
+            parsedState.finalRoundTriggerIndex = null;
+        }
+        
+        if (
+            !Number.isInteger(
+                parsedState.finalTurnsRemaining
+            )
+        ) {
+            parsedState.finalTurnsRemaining = 0;
+        }
+        
+        if (
+            typeof parsedState.gameOver !==
+            'boolean'
+        ) {
+            parsedState.gameOver = false;
+        }
         return parsedState;
     } catch (error) {
         return createInitialState();
@@ -89,6 +126,17 @@ function saveSnapshot() {
             gameState.turnScore,
         round:
             gameState.round,
+        finalRoundActive:
+            gameState.finalRoundActive,
+        
+        finalRoundTriggerIndex:
+            gameState.finalRoundTriggerIndex,
+        
+        finalTurnsRemaining:
+            gameState.finalTurnsRemaining,
+        
+        gameOver:
+            gameState.gameOver,
         history: [...gameState.history]
     };
 
@@ -170,6 +218,121 @@ function addThrowScore() {
     renderGame();
 }
 
+function startFinalRoundIfNeeded(playerIndex) {
+
+    if (gameState.finalRoundActive) {
+        return;
+    }
+
+    const player =
+        gameState.players[playerIndex];
+
+    if (player.totalScore < 10000) {
+        return;
+    }
+
+    gameState.finalRoundActive = true;
+
+    gameState.finalRoundTriggerIndex =
+        playerIndex;
+
+    // Alla ANDRA spelare får en sista tur.
+    gameState.finalTurnsRemaining =
+        gameState.players.length - 1;
+
+    gameState.history.unshift(
+        `${player.name} nådde ${player.totalScore.toLocaleString('sv-SE')} ` +
+        `poäng. Slutrundan har börjat!`
+    );
+}
+
+function finishFinalTurn() {
+
+    if (!gameState.finalRoundActive) {
+        return false;
+    }
+
+    gameState.finalTurnsRemaining -= 1;
+
+    if (gameState.finalTurnsRemaining <= 0) {
+
+        gameState.finalTurnsRemaining = 0;
+        gameState.gameOver = true;
+
+        saveGameState();
+
+        showWinner();
+
+        return true;
+    }
+
+    return false;
+}
+
+function showWinner() {
+
+    const highestScore =
+        Math.max(
+            ...gameState.players.map(
+                (player) =>
+                    player.totalScore
+            )
+        );
+
+    const winners =
+        gameState.players.filter(
+            (player) =>
+                player.totalScore ===
+                highestScore
+        );
+
+    const winnerTitle =
+        document.getElementById(
+            'winnerPopupTitle'
+        );
+
+    const winnerText =
+        document.getElementById(
+            'winnerPopupText'
+        );
+
+    if (winners.length === 1) {
+
+        winnerTitle.textContent =
+            '🏆 ' +
+            winners[0].name +
+            ' vinner!';
+
+        winnerText.textContent =
+            winners[0].totalScore
+                .toLocaleString('sv-SE') +
+            ' poäng';
+
+    } else {
+
+        winnerTitle.textContent =
+            '🤝 Oavgjort!';
+
+        winnerText.textContent =
+            winners
+                .map(
+                    (player) =>
+                        player.name
+                )
+                .join(' & ') +
+            ' – ' +
+            highestScore
+                .toLocaleString('sv-SE') +
+            ' poäng';
+
+    }
+
+    document
+        .getElementById('winnerPopup')
+        .classList
+        .remove('hidden');
+}
+
 function bankTurn() {
     const enteredScore =
         Number(document.getElementById('scoreInput').value) || 0;
@@ -206,6 +369,13 @@ function bankTurn() {
         
     currentPlayer.consecutiveFarkles = 0;
     
+    const finalRoundWasAlreadyActive =
+        gameState.finalRoundActive;
+    
+    startFinalRoundIfNeeded(
+        gameState.currentPlayerIndex
+    );
+    
     gameState.history.unshift(
         `${currentPlayer.name} sparade ` +
         `${gameState.turnScore} poäng. ` +
@@ -214,7 +384,33 @@ function bankTurn() {
 
     gameState.turnScore = 0;
 
+    /*
+    Den spelare som STARTAR slutrundan
+    ska inte räknas som en av de sista
+    turena.
+    
+    Därför räknar vi bara ner om
+    slutrundan redan var aktiv när
+    spelaren började avsluta sin tur.
+    */
+    
+    if (finalRoundWasAlreadyActive) {
+    
+        const gameEnded =
+            finishFinalTurn();
+    
+        if (gameEnded) {
+    
+            saveGameState();
+            clearScoreInput();
+            renderGame();
+    
+            return;
+        }
+    }
+    
     goToNextPlayer();
+    
     saveGameState();
     clearScoreInput();
     renderGame();
@@ -263,6 +459,21 @@ function farkleTurn() {
 
     gameState.turnScore = 0;
 
+    if (gameState.finalRoundActive) {
+
+        const gameEnded =
+            finishFinalTurn();
+    
+        if (gameEnded) {
+    
+            saveGameState();
+            clearScoreInput();
+            renderGame();
+    
+            return;
+        }
+    }
+
     goToNextPlayer();
     saveGameState();
     clearScoreInput();
@@ -305,6 +516,18 @@ function undoLastAction() {
 
     gameState.round =
         previousState.round;
+        
+    gameState.finalRoundActive =
+        previousState.finalRoundActive;
+    
+    gameState.finalRoundTriggerIndex =
+        previousState.finalRoundTriggerIndex;
+    
+    gameState.finalTurnsRemaining =
+        previousState.finalTurnsRemaining;
+    
+    gameState.gameOver =
+        previousState.gameOver;
 
     gameState.history =
         previousState.history;
@@ -386,17 +609,17 @@ function renderFinalRoundTarget() {
         );
 
     // Dölj informationen tills någon nått 10 000.
-    if (highestScoreOverall < 10000) {
+    if (!gameState.finalRoundActive) {
         targetElement.classList.add('hidden');
-
+    
         targetElement.classList.remove(
             'target-red',
             'target-green',
             'target-orange'
         );
-
+    
         targetElement.textContent = '';
-
+    
         return;
     }
 
